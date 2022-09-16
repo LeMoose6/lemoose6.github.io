@@ -9,15 +9,19 @@
   <header>
     <h1>Welcome to Le Moose Bank</h1>
   </header>
-  <div>
-    <form action="login.php" method="post">
+      <main id="main-holder">
+            <div id="login-error-msg-holder">
+                 <p id="login-error-msg">Invalid username<span id="error-msg-second-line">and/or password</span></p>
+            </div>
+            
+      <form id="login-form">
       <label for="user">username:</label>
       <input type="text" id="user" name="user"><br>
       <label for="password">password:</label>
       <input type="text" id="password" name="password"><br>
       <input type="submit" value="Submit">
         </form>
-  </div>
+      </main>
   <footer>
 <p>If you don't have an account please contact a manager of Le Moose</p>
       </footer>
