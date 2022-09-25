@@ -1,3 +1,5 @@
+var asmtNo = 0
+
 function asmtData() {
 let aname = document.getElementById('aname').value;
 
@@ -6,8 +8,10 @@ let aclass = document.getElementById('class').value;
 let dueDate = document.getElementById('date').value;
 
 let dueTime = document.getElementById('time').value;
-  
-localStorage.setItem(aclass+":"+aname+" -- "+dueDate+" "+dueTime+"!");location.reload();
+
+var asmtNo += 1
+
+localStorage.setItem(asmtNo, aclass+":"+aname+" -- "+dueDate+" "+dueTime+"!");location.reload();
 }
 
 function writeAssignments() {
