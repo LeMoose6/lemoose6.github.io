@@ -6,9 +6,10 @@ let class = document.getElementById('class').value;
 let dueDate = document.getElementById('date').value;
 
 let dueTime = document.getElementById('time').value;
+  
+localStorage.setItem(class+":"+aname+" -- "+dueDate+" "+dueTime+"!");location.reload();
 }
 
 function writeAssignments() {
-localStorage.setItem(class+":"+aname+" -- "+dueDate+" "+dueTime+"!");location.reload();
 document.write(JSON.stringify(localStorage).replaceAll("!",<br />));
 }
