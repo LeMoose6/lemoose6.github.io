@@ -15,5 +15,7 @@ localStorage.setItem(asmtNo, aclass+":"+aname+" -- "+dueDate+" "+dueTime+"!");lo
 }
 
 function writeAssignments() {
-document.write(JSON.stringify(localStorage).replaceAll("!",<br />));
+for(let i = 1; i<asmtNo+1; i++) {
+localStorage.getItem(i);
+}
 }
