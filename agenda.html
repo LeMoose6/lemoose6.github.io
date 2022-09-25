@@ -1,0 +1,28 @@
+<!Doctype html>
+<html>
+<head>
+	<title>Agenda</title>
+	<script src="agenda.js"></script>
+</head>
+<body>
+	<h1>Agenda</h1>
+	<script>writeAssignments()</script>
+	<h2>Add Assignment</h2>
+	<form onsubmit="asmtData()">
+		<label for="aname">Assignment Name:</label>
+		<input type="text" id="aname" name="aname" placeholder="page 1"> <br>
+		
+		<label for="class">Class:</label>
+		<input type="class" id="class" name="class" placeholder="algebra"> <br>
+		
+		<label for="date">Due Date:</label>
+		<input type="date" id="date" name="date"> <br>
+		
+		<label for="time">Time Due:</label>
+		<input type="time" id="time" name="time"> <br>
+		
+		<button type="reset">Reset</button>
+		<button type="submit">Add Assignment</button>
+	</form>
+</body>
+</html>
