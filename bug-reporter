@@ -1,0 +1,10 @@
+<!Doctype html>
+<html>
+<head>
+  <title>Bug Reporter</title>
+  </head>
+<body>
+  <p>please fill out the following form if you have found a bug</p>
+  <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfBupFTr7QpleBgMA_laQX7AJBhxz3eKYteY9if_Q3ZSkqYoA/viewform?embedded=true" width="640" height="476" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+</body>
+</html>
