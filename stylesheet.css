@@ -1,0 +1,23 @@
+.italics {
+  font-style: italic;
+}
+
+p {
+ font-family:  "monaco", monospace;
+ color: SlateBlue;
+}
+
+h1 {
+ font-family: "Courier New", monospace;
+ color: SlateBlue;
+}
+
+h2 {
+ font-family: "Courier New", monospace;
+ color: SlateBlue;
+}
+
+div{
+ outline-color: DarkBlue;
+  outline-style: solid;
+}
