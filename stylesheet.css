@@ -25,6 +25,9 @@ h3 {
  color: rgb(4, 24, 181);
 }
 
+a {
+  color: rgb(37, 153, 93);
+}
 div {
  outline-color: rgb(13, 64, 33);
   outline-style: solid;
