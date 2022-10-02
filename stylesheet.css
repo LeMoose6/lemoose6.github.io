@@ -4,20 +4,25 @@
 
 p {
  font-family:  "monaco", monospace;
- color: SlateBlue;
+ color: DarkBlue;
 }
 
 h1 {
  font-family: "Courier New", monospace;
- color: SlateBlue;
+ color: DarkBlue;
 }
 
 h2 {
  font-family: "Courier New", monospace;
- color: SlateBlue;
+ color: DarkBlue;
+}
+
+h3 {
+ font-family: "Courier New", monospace;
+ color: DarkBlue;
 }
 
 div{
- outline-color: DarkBlue;
+ outline-color: MediumSeaGreen;
   outline-style: solid;
 }
