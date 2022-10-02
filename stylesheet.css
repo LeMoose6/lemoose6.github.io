@@ -3,8 +3,12 @@
 }
 
 body {
- background-color: rgb(8, 5, 46); 
+ background-color: rgb(8, 5, 46);
+  outline-color: rgb(111, 4, 133)
+  outline-width: 10px;
+  outline-type: solid;
 }
+
 p {
  font-family:  "monaco", monospace;
  color: rgb(4, 24, 181);
@@ -12,23 +16,25 @@ p {
 
 h1 {
  font-family: "Courier New", monospace;
- color: rgb(4, 24, 181);
+ color: rgb(144, 7, 171);
 }
 
 h2 {
  font-family: "Courier New", monospace;
- color: rgb(4, 24, 181);
+ color: rgb(144, 7, 171);
 }
 
 h3 {
  font-family: "Courier New", monospace;
- color: rgb(4, 24, 181);
+ color: rgb(144, 7, 171);
 }
 
 a {
   color: rgb(37, 153, 93);
 }
+
 div {
  outline-color: rgb(13, 64, 33);
   outline-style: solid;
+  outline-width: 10px;
 }
