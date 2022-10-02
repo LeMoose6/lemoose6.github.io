@@ -2,27 +2,30 @@
   font-style: italic;
 }
 
+body {
+ background-color: rgb(8, 5, 46); 
+}
 p {
  font-family:  "monaco", monospace;
- color: rgb(32, 8, 102);
+ color: rgb(4, 24, 181);
 }
 
 h1 {
  font-family: "Courier New", monospace;
- color: rgb(32, 8, 102);
+ color: rgb(4, 24, 181);
 }
 
 h2 {
  font-family: "Courier New", monospace;
- color: rgb(32, 8, 102);
+ color: rgb(4, 24, 181);
 }
 
 h3 {
  font-family: "Courier New", monospace;
- color: rgb(32, 8, 102);
+ color: rgb(4, 24, 181);
 }
 
-div{
+div {
  outline-color: rgb(13, 64, 33);
   outline-style: solid;
 }
