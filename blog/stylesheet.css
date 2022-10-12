@@ -1,0 +1,73 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+ background-color: rgb(8, 5, 46);
+  padding: 20px;
+}
+
+.header {
+  padding: 30px;
+  background: rgb(13, 64, 33);
+}
+
+.leftcolumn {
+  float: left;
+  width: 75%;
+}
+
+.rightcolumn {
+  float: left;
+  width: 25%;
+  padding-left: 20px;
+}
+  
+ .card {
+  background-color: rgb(28, 23, 94);
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+@media screen and (max-width: 800px) {
+  .leftcolumn, .rightcolumn { 
+    width: 100%;
+    padding: 0;
+  }
+}
+   
+p {
+ font-family:  "monaco", monospace;
+ color: rgb(4, 24, 181);
+}
+
+h1 {
+ font-family: "Courier New", monospace;
+ color: rgb(144, 7, 171);
+}
+
+h2 {
+ font-family: "Courier New", monospace;
+ color: rgb(144, 7, 171);
+}
+
+h3 {
+ font-family: "Courier New", monospace;
+ color: rgb(144, 7, 171);
+}
+
+a {
+  color: rgb(37, 153, 93);
+}
+
+div {
+ outline-color: rgb(13, 64, 33);
+  outline-style: solid;
+  outline-width: 6.5px;
+}
