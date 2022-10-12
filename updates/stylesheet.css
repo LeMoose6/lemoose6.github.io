@@ -10,6 +10,9 @@ body {
 .header {
   padding: 30px;
   background: rgb(7, 48, 23);
+  outline-color: rgb(13, 64, 33);
+  outline-style: solid;
+  outline-width: 6.5px;
 }
 
 .leftcolumn {
@@ -27,6 +30,9 @@ body {
   background-color: rgb(28, 23, 94);
   padding: 20px;
   margin-top: 20px;
+  outline-color: rgb(13, 64, 33);
+  outline-style: solid;
+  outline-width: 6.5px;
 }
 
 .row:after {
@@ -76,7 +82,5 @@ a {
 }
 
 div {
-  outline-color: rgb(13, 64, 33);
-  outline-style: solid;
-  outline-width: 6.5px;
+  
 }
