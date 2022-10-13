@@ -29,9 +29,7 @@
 
 body {
  background-color: rgb(8, 5, 46);
-  outline-color: rgb(126, 55, 140);
-  outline-width: 6.5px;
-  outline-type: solid;
+ padding: 20px;
 }
 
 p {
@@ -59,12 +57,7 @@ a {
 }
 
 .content {
-  background-color: rgb(8, 5, 46);
-  outline-color: rgb(13, 64, 33);
+ outline-color: rgb(13, 64, 33);
   outline-style: solid;
   outline-width: 6.5px;
-}
-
-body {
-  background-color: rgb(8, 5, 46);
 }
