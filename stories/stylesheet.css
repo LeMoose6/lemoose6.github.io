@@ -59,12 +59,7 @@ a {
 }
 
 .content {
-  background-color: rgb(8, 5, 46);
-  outline-color: rgb(13, 64, 33);
+ outline-color: rgb(13, 64, 33);
   outline-style: solid;
   outline-width: 6.5px;
-}
-
-body {
-  background-color: rgb(8, 5, 46);
 }
