@@ -2,6 +2,30 @@
   font-style: italic;
 }
 
+.nav-bar {
+  backgrond-color: rgb(28, 23, 94);
+  overflow: hidden;
+}
+
+.nav-bar a {
+  float: left;
+  color: rgb(37, 153, 93);
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.nav-bar a:hover {
+  background-color: rgb(37, 153, 93);
+  color: rgb(28, 23, 94);
+}
+
+.nav-bar a.active {
+  background-color: rgb(171, 64, 22);
+  color: rgb(28, 23, 94);
+}
+
 body {
  background-color: rgb(8, 5, 46);
   outline-color: rgb(126, 55, 140);
@@ -33,7 +57,7 @@ a {
   color: rgb(37, 153, 93);
 }
 
-div {
+.content {
  outline-color: rgb(13, 64, 33);
   outline-style: solid;
   outline-width: 6.5px;
