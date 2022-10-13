@@ -2,6 +2,14 @@
   font-style: italic;
 }
 
+.header {
+  padding: 30px;
+  background: rgb(7, 48, 23);
+  outline-color: rgb(13, 64, 33);
+  outline-style: solid;
+  outline-width: 6.5px;
+}
+
 .nav-bar {
   background-color: rgb(28, 23, 94);
   overflow: hidden;
