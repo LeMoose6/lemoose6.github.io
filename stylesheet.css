@@ -1,7 +1,3 @@
-.italics {
-  font-style: italic;
-}
-
 .header {
   padding: 30px;
   background: rgb(7, 48, 23);
@@ -42,7 +38,7 @@ body {
 
 p {
  font-family:  "monaco", monospace;
- color: rgb(4, 24, 181);
+color: rgb(137, 149, 245);
 }
 
 h1 {
