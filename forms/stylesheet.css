@@ -65,7 +65,10 @@ a {
 }
 
 .content {
- outline-color: rgb(13, 64, 33);
+  background-color: rgb(28, 23, 94);
+  padding: 20px;
+  margin-top: 20px;
+  outline-color: rgb(13, 64, 33);
   outline-style: solid;
   outline-width: 6.5px;
 }
