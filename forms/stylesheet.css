@@ -80,23 +80,23 @@ a {
   margin: auto;
 }
 
-.label {
+.formlabel, label {
   font-family:  "monaco", monospace;
   color: rgb(137, 149, 245);
 }
 
-.text {
+.input[type=text] {
   color: rgb(37, 153, 93);
   border-bottom: 2px rgb(171, 64, 22);
 }
 
-.submit {
+.input[type=submit] {
   color: rgb(8, 5, 46);
   background-color: (37, 153, 93);
   padding: 12px 28px;
   border-radius: 2px;
 }
 
-.submit:hover {
+.input[type=submit]:hover {
   background-color: rgb(171, 64, 22);
 }
