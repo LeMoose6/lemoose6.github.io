@@ -13,7 +13,12 @@
     <a href="/updates">Updates</a>
     <a href="/forms">Forms</a>
   </div>
+  <div class = "content">
   <p>please fill out the following form if you have found a bug</p>
-  <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfBupFTr7QpleBgMA_laQX7AJBhxz3eKYteY9if_Q3ZSkqYoA/viewform?embedded=true" width="640" height="476" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+<form action="/forms/bug-reporter.php" method="get">
+  Page: <input type="text" name="page"><br>
+  Description: <input type="text" name="des"><br>
+  <input type="submit">
+</form>
 </body>
 </html>
