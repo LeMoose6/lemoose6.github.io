@@ -6,6 +6,7 @@
   background-color: rgb(28, 23, 94);
   overflow: hidden;
   padding: 10px;
+  position: sticky;
 }
 
 .nav-bar a {
@@ -38,6 +39,7 @@ body {
   outline-color: rgb(13, 64, 33);
   outline-style: solid;
   outline-width: 6.5px;
+  position: sticky;
 }
 
 .leftcolumn {
