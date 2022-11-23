@@ -73,7 +73,7 @@ body {
   }
 }
    
-p {
+p, li{
  font-family:  "monaco", monospace;
  color: rgb(137, 149, 245);
 }
