@@ -73,7 +73,7 @@ a {
   outline-width: 6.5px;
 }
 
-.flip-card-left, .flip-card-left {
+.flip-card-left, .flip-card-right {
     background-color: rgb(28, 23, 94); 
     width: 300px;
     height: 300px;
