@@ -82,6 +82,7 @@ a {
     outline-width: 6.5px;
     perspective: 1000px;
     margin-top: 20px;
+    float: left;
 }
 
 .flip-card-inner {
