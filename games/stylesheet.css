@@ -82,6 +82,8 @@ a {
     outline-width: 6.5px;
     perspective: 1000px;
     margin-top: 20px;
+    margin-left: 75px;
+    margin-right: 25px;
     float: left
 }
 
