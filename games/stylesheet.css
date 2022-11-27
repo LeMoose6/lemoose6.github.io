@@ -77,7 +77,9 @@ a {
     background-color: rgb(28, 23, 94); 
     width: 300px;
     height: 300px;
-    border: 1.5px solid rgb(78, 173, 49);
+    outline-color: rgb(13, 64, 33);
+    outline-style: solid;
+    outline-width: 6.5px;
     perspective: 1000px;
     margin-top: 20px;
 }
