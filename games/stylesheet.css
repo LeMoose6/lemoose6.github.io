@@ -73,7 +73,7 @@ a {
   outline-width: 6.5px;
 }
 
-.flip-card-left, .flip-card-right {
+.flip-card {
     background-color: rgb(28, 23, 94); 
     width: 300px;
     height: 300px;
@@ -82,15 +82,8 @@ a {
     outline-width: 6.5px;
     perspective: 1000px;
     margin-top: 20px;
-    width: 30%;
-}
-
-.flip-card-left {
-  float: left;
-}
-
-.flip-card-right {
-  float: right;
+    width: 40%;
+    float: left
 }
 
 .flip-card-inner {
