@@ -19,6 +19,7 @@ a:hover, a:active {
 
 body {
 	background: linear-gradient(to bottom, rgb(2, 48, 2) 0%, rgb(7, 28, 5) 100%);
+	background-repeat: no-repeat;
 }
 
 h1, h2 {
