@@ -1,0 +1,26 @@
+a {
+	text-decoration: none;
+	padding: 17px 40%;
+	margin-bottom: 10px;
+	color: rgb(4, 4, 18);
+	border: 3px rgb(4, 4, 18);
+	text-align: center;
+	display: inline-block;
+	
+}
+
+a:link, a:visited {
+	background-color: rgb(42, 128, 53);
+}
+
+a:hover, a:active {
+	background-color: rgb(31, 94, 39);
+}
+
+body {
+	background: linear-gradient(to bottom, rgb(2, 48, 2) 0%, rgb(7, 28, 5) 100%);
+}
+
+h1, h2 {
+	color: rgb(117, 82, 50);
+}
