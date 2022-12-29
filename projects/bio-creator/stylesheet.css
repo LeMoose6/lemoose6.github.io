@@ -1,0 +1,13 @@
+body {
+	background: rgb(8, 5, 46);
+}
+
+div {
+	margin-bottom: 30px;
+	outline: 6.5px solid rgb(13, 64, 33);
+	background-color: rgb(28, 23, 94);
+}
+
+p, label {
+	color: rgb(137, 149, 245);
+}
