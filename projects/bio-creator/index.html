@@ -1,0 +1,35 @@
+<!Doctype html>
+<html>
+<head>
+	<title>Le Moose Bio Creator</title>
+	<link href="bio-creator.css" rel="stylesheet">
+</head>
+<body>
+	<div class="header">
+		<h2 style="color:white;">Bio Creator</h2>
+		<p>Create your perfect social media bio by putting information in the fields below. Fill out all fields that are required for the best result. (other fields are optional)</p>
+	</div>
+	
+	<div class="input">
+		<label for="name">Name: </label>
+		<input id="name"> 
+		<label for="name">(required)</label><br>
+		<label for="bday">Birthdate: </label> 
+		<input id="bday"><br>
+		<label for="fact">Fun fact (I...): </label>
+		<input id="fact"><br>
+		<label for="contact">Contact Info: </label> 
+		<input id="contact">
+	 	<label for="platform">Platform:<label>
+		<input id="platform"><br>
+		<button onclick="create()">Create Bio</button>
+		<button onclick="reset()">Reset</button><br>
+	</div>
+	
+	<div class="bio">
+		<p id="bio">Bio will appear here</p>
+	</div>
+	
+	<script src="bio-creator.js"></script>
+</body>
+</html>
