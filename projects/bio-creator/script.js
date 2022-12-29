@@ -30,14 +30,10 @@ function write() {
 	if (bioData[3] != "") {
 		bio += ". You can contact me at " + bioData[3];
 		contactInfo = 1;
-	} else {
-		contactInfo = 0;
-	}
-			
-	if (contactInfo = 1 && bioData[4] != "") {
-		bio += " on " + bioData[4]
-	}
-			
+		if (bioData[4] != "") {
+			bio += " on " + bioData[4]
+		}
+	}			
 			
 	bio += "."
 			
