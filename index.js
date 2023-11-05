@@ -1,3 +1,24 @@
+function change_pages(page) {
+    document.querySelector('#homepage').style.display = 'none';
+    if (page === "home") {
+        document.querySelector('#homepage').style.display = 'block';
+    } else if (page === "judymudd") {
+        alert("judy mudd page not available")
+    } else if (page === "news") {
+        alert("news page not available")
+    } else if (page === "library") {
+        open("https://librarycat.org/lib/lemoose6")
+    }
+}
+
+function nav_buttons() {
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', () => {
+            change_pages(link.dataset.page);
+        });
+    });
+}
+
 function latest_news() {
     fetch('https://website-redesign-api.lemoose6.repl.co/news/recent-non-featured')
     .then(response => response.json())
@@ -18,4 +39,5 @@ function latest_news() {
     });
 }
 
+nav_buttons()
 latest_news()
