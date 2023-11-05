@@ -1,5 +1,13 @@
+history.pushState({page: "home"}, "", "home")
+
+// Navigation
+window.onpopstate = function(event) {
+    change_pages(event.state.page);
+}
+
 function change_pages(page) {
     document.querySelector('#homepage').style.display = 'none';
+    history.pushState({page: page}, "", `${page}`)
     if (page === "home") {
         document.querySelector('#homepage').style.display = 'block';
     } else if (page === "judymudd") {
@@ -19,6 +27,7 @@ function nav_buttons() {
     });
 }
 
+// Homepage
 function latest_news() {
     fetch('https://website-redesign-api.lemoose6.repl.co/news/recent-non-featured')
     .then(response => response.json())
