@@ -13,7 +13,11 @@ function change_pages(page) {
     });
 
     // Add page to history
-    history.pushState({page: page}, "", `${page}`);
+    if (page === "home") {
+        history.pushState({page: "home"}, "", "");    
+    } else {
+        history.pushState({page: page}, "", `${page}`);
+    }
 
     // Show page
     document.querySelector(`#${page}`).style.display = 'block';
