@@ -1,3 +1,6 @@
+// In Progress Warning
+alert("This website is currently in the process of being redesigned. Therefore, many features will be either discontinued, available at a later date, or experience minor bugs. Thank you for your understanding.")
+
 // Navigation
 window.onpopstate = function(event) {
     change_pages(event.state.page);
