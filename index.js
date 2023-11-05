@@ -61,6 +61,15 @@ function latest_news() {
     });
 }
 
+function featured_content_clickable() {
+    document.querySelectorAll('.carousel-item').forEach(item => {
+        item.addEventListener('click', () => {
+            open(item.dataset.link)
+        });
+    });
+}
+
 change_pages("home")
 nav_buttons()
 latest_news()
+featured_content_clickable()
