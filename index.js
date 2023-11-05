@@ -1,25 +1,30 @@
-history.pushState({page: "home"}, "", "home")
-
 // Navigation
 window.onpopstate = function(event) {
     change_pages(event.state.page);
 }
 
 function change_pages(page) {
-    document.querySelector('#homepage').style.display = 'none';
-    history.pushState({page: page}, "", `${page}`)
-    if (page === "home") {
-        document.querySelector('#homepage').style.display = 'block';
-    } else if (page === "judymudd") {
-        alert("judy mudd page not available")
-    } else if (page === "news") {
-        alert("news page not available")
-    } else if (page === "library") {
+    // Clear the screen
+    document.querySelectorAll('.page').forEach(page => {
+        page.style.display = 'none';
+    });
+
+    // Add page to history
+    history.pushState({page: page}, "", `${page}`);
+
+    // Show page
+    document.querySelector(`#${page}`).style.display = 'block';
+
+    // If the page is the library, redirect the user to the library website
+    if (page === 'library') {
+        alert("You are going to be redirected to the library");
         open("https://librarycat.org/lib/lemoose6")
     }
+
 }
 
 function nav_buttons() {
+    // Select all the links, then give them a response to a click
     document.querySelectorAll('.nav-link').forEach(link => {
         link.addEventListener('click', () => {
             change_pages(link.dataset.page);
@@ -29,6 +34,7 @@ function nav_buttons() {
 
 // Homepage
 function latest_news() {
+    // This doesn't work yet
     fetch('https://website-redesign-api.lemoose6.repl.co/news/recent-non-featured')
     .then(response => response.json())
     .then(data => {
@@ -48,5 +54,6 @@ function latest_news() {
     });
 }
 
+change_pages("home")
 nav_buttons()
 latest_news()
