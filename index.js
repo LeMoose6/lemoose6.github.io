@@ -14,7 +14,7 @@ function change_pages(page) {
 
     // Add page to history
     if (page === "home") {
-        history.pushState({page: "home"}, "", "");    
+        history.pushState({page: "home"}, "", "/");    
     } else {
         history.pushState({page: page}, "", `${page}`);
     }
