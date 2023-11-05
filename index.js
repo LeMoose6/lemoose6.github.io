@@ -50,9 +50,6 @@ function latest_news() {
         document.querySelector('#latest-date').innerHTML += update.date;
         document.querySelector('#latest-content').innerHTML = update.content;
     })
-    .catch(error => {
-        alert(error)
-    });
 
     fetch('https://website-redesign-api.lemoose6.repl.co/news/recent-featured')
     .then(response => response.json())
