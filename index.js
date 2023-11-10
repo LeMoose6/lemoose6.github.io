@@ -19,15 +19,15 @@ function change_pages(page) {
     // Show page
     document.querySelector(`#${page}`).style.display = 'block';
 
-    // If the page is the library, redirect the user to the library website
-    if (page === 'library') {
-        alert("You are going to be redirected to the library");
-        open("https://librarycat.org/lib/lemoose6")
-    } else if (page === 'wishlist') {
+    if (page === 'wishlist') {
         alert("You are going to be redirected to the wishlist");
         open("https://mywishlist.online/w/bzi4an/nils-fotis");
-        change_pages("home");
     }
+    // If the page is the library, redirect the user to the library website
+    else if (page === 'library') {
+        alert("You are going to be redirected to the library");
+        open("https://librarycat.org/lib/lemoose6")
+    } 
 
 }
 
