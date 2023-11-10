@@ -1,6 +1,3 @@
-// In Progress Warning
-alert("This website is currently in the process of being redesigned. Therefore, many features will be either discontinued, available at a later date, or experience minor bugs. Thank you for your understanding.")
-
 // Navigation
 window.onpopstate = function(event) {
     change_pages(event.state.page);
@@ -26,6 +23,10 @@ function change_pages(page) {
     if (page === 'library') {
         alert("You are going to be redirected to the library");
         open("https://librarycat.org/lib/lemoose6")
+    } else if (page === 'wishlist') {
+        alert("You are going to be redirected to the wishlist");
+        open("https://mywishlist.online/w/bzi4an/nils-fotis");
+        change_pages("home");
     }
 
 }
@@ -73,3 +74,6 @@ change_pages("home")
 nav_buttons()
 latest_news()
 featured_content_clickable()
+
+// In Progress Warning
+alert("This website is currently in the process of being redesigned. Therefore, many features will be either discontinued, available at a later date, or experience minor bugs. Thank you for your understanding.")
