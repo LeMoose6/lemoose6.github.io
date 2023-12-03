@@ -78,5 +78,5 @@ document.addEventListener('DOMContentLoaded', () =>{change_pages("home");
     latest_news();
 
     // In Progress Warning
-    alert("This website is currently in the process of being redesigned. Therefore, many features will be either discontinued, available at a later date, or experience minor bugs. Thank you for your understanding.");
+alert("Welcome to the LeMoose Website! Our Judy Mudd and News pages are currently still under development. These features will be prepared before March 2024, thank you for your understanding!");
 });
