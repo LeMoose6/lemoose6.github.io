@@ -46,11 +46,11 @@ function latest_news() {
     fetch('https://website-redesign-api.lemoose6.repl.co/news/recent-non-featured')
     .then(response => response.json())
     .then(data => {
-        const update = data.update;
-        document.querySelector('#latest-title').innerHTML = update.title;
+        const update = data[update];
         document.querySelector('#latest-date').innerHTML += update.date;
         document.querySelector('#latest-content').innerHTML = update.content;
     })
+    .catch(error => alert(error));
 
     fetch('https://website-redesign-api.lemoose6.repl.co/news/recent-featured')
     .then(response => response.json())
