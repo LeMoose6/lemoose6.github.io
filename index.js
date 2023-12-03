@@ -19,10 +19,6 @@ function change_pages(page) {
     // Show page
     document.querySelector(`#${page}`).style.display = 'block';
 
-    if (page === 'wishlist') {
-        alert("You are going to be redirected to the wishlist");
-        open("https://mywishlist.online/w/bzi4an/nils-fotis");
-    }
     // If the page is the library, redirect the user to the library website
     else if (page === 'library') {
         alert("You are going to be redirected to the library");
