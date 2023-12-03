@@ -1,5 +1,5 @@
 // Navigation
-window.onpopstate = function(event) {
+window.onpopstate = function (event) {
     change_pages(event.state.page);
 }
 
@@ -11,9 +11,9 @@ function change_pages(page) {
 
     // Add page to history
     if (page === "home") {
-        history.pushState({page: "home"}, "", "/");    
+        history.pushState({ page: "home" }, "", "/");
     } else {
-        history.pushState({page: page}, "", `${page}`);
+        history.pushState({ page: page }, "", `${page}`);
     }
 
     // Show page
@@ -27,7 +27,7 @@ function change_pages(page) {
     else if (page === 'library') {
         alert("You are going to be redirected to the library");
         open("https://librarycat.org/lib/lemoose6")
-    } 
+    }
 
 }
 
@@ -48,9 +48,35 @@ function featured_content_clickable() {
     });
 }
 
-change_pages("home");
-nav_buttons();
-featured_content_clickable();
+function latest_news() {
+    // Get most recent non featured
+    var i = 0
+    while (true) {
+        if (UPDATES[i].featured !== true) {
+            document.querySelector('#latest-date').innerHTML += UPDATES[i].date;
+            document.querySelector('#latest-content').innerHTML = UPDATES[i].content;
+            break
+        }
+        i++
+        
+    }
+    i = 0
+    while (true) {
+        if (UPDATES[i].featured === true) {
+            document.querySelector('#featured-date').innerHTML += UPDATES[i].date;
+            document.querySelector('#featured-content').innerHTML = UPDATES[i].content;
+            break
+        }
+        i++
+    }
+}
 
-// In Progress Warning
-alert("This website is currently in the process of being redesigned. Therefore, many features will be either discontinued, available at a later date, or experience minor bugs. Thank you for your understanding.");
+document.addEventListener('DOMContentLoaded', () =>{change_pages("home");
+    // Run starting functions
+    nav_buttons();
+    featured_content_clickable();
+    latest_news();
+
+    // In Progress Warning
+    alert("This website is currently in the process of being redesigned. Therefore, many features will be either discontinued, available at a later date, or experience minor bugs. Thank you for your understanding.");
+});
