@@ -40,28 +40,6 @@ function nav_buttons() {
     });
 }
 
-// Homepage
-function latest_news() {
-    // This doesn't work yet
-    fetch('https://website-redesign-api.lemoose6.repl.co/news/recent-non-featured')
-    .then(response => response.json())
-    .then(data => {
-        const update = data[update];
-        document.querySelector('#latest-date').innerHTML += update.date;
-        document.querySelector('#latest-content').innerHTML = update.content;
-    })
-    .catch(error => alert(error));
-
-    fetch('https://website-redesign-api.lemoose6.repl.co/news/recent-featured')
-    .then(response => response.json())
-    .then(data => {
-        const update = data.update
-        document.querySelector('#featured-title').innerHTML = update.title;
-        document.querySelector('#featured-date').innerHTML += update.date;
-        document.querySelector('#featured-content').innerHTML = update.content;
-    });
-}
-
 function featured_content_clickable() {
     document.querySelectorAll('.carousel-item').forEach(item => {
         item.addEventListener('click', () => {
@@ -70,10 +48,9 @@ function featured_content_clickable() {
     });
 }
 
-change_pages("home")
-nav_buttons()
-latest_news()
-featured_content_clickable()
+change_pages("home");
+nav_buttons();
+featured_content_clickable();
 
 // In Progress Warning
-alert("This website is currently in the process of being redesigned. Therefore, many features will be either discontinued, available at a later date, or experience minor bugs. Thank you for your understanding.")
+alert("This website is currently in the process of being redesigned. Therefore, many features will be either discontinued, available at a later date, or experience minor bugs. Thank you for your understanding.");
