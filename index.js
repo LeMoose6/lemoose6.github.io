@@ -20,7 +20,7 @@ function change_pages(page) {
     document.querySelector(`#${page}`).style.display = 'block';
 
     // If the page is the library, redirect the user to the library website
-    else if (page === 'library') {
+    if (page === 'library') {
         alert("You are going to be redirected to the library");
         open("https://librarycat.org/lib/lemoose6")
     }
@@ -74,5 +74,5 @@ document.addEventListener('DOMContentLoaded', () =>{change_pages("home");
     latest_news();
 
     // In Progress Warning
-alert("Welcome to the LeMoose Website! Our Judy Mudd and News pages are currently still under development. These features will be prepared before March 2024, thank you for your understanding!");
+    alert("Welcome to the LeMoose Website! Our Judy Mudd and News pages are currently still under development. These features will be prepared before March 2024, thank you for your understanding!");
 });
