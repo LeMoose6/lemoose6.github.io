@@ -70,15 +70,36 @@ function latest_news() {
 
 // News Page
 function add_news() {
+    // Get the sections
     const featured = document.querySelector("#news-featured");
     const mudd = document.querySelector("#news-mudd");
     const all = document.querySelector("#news-all");
 
-    for (var i=0; i < length(UPDATES); i++) {
+    // Loop through the "articles"
+    for (var i=UPDATES.length - 1; i >= 0; i--) {
         const update = UPDATES[i];
-        if (update.featured) {
 
+        // Put content into a card
+        const html = `
+            <div class="card" style="width: 18rem; margin: 0.75rem;">
+                <div class="card-body">
+                <h4>${update.title}</h4>
+                <p class="card-text">${update.content}</p>
+                </div>
+                <div class="card-footer">${update.date}</div>
+            </div>
+        `
+
+        // Place card where it belongs
+        if (update.featured) {
+            featured.innerHTML += html;
         }
+        if (update.mudd) {
+            mudd.innerHTML += html;
+        }
+
+        // Add card to the "all" section
+        all.innerHTML += html;
     }
 }
 
@@ -88,6 +109,7 @@ document.addEventListener('DOMContentLoaded', () =>{change_pages("home");
     nav_buttons();
     featured_content_clickable();
     latest_news();
+    add_news();
 
     // In Progress Warning
 alert("Welcome to the LeMoose Website! Our Judy Mudd and News pages are currently still under development. These features will be prepared before March 2024, thank you for your understanding!");
