@@ -76,7 +76,7 @@ function add_news() {
     const all = document.querySelector("#news-all");
 
     // Loop through the "articles"
-    for (var i=UPDATES.length - 1; i >= 0; i--) {
+    for (var i=0;i < UPDATES.length; i++) {
         const update = UPDATES[i];
 
         // Put content into a card
