@@ -36,6 +36,7 @@ function nav_buttons() {
     });
 }
 
+// Homepage
 function featured_content_clickable() {
     document.querySelectorAll('.carousel-item').forEach(item => {
         item.addEventListener('click', () => {
@@ -67,6 +68,21 @@ function latest_news() {
     }
 }
 
+// News Page
+function add_news() {
+    const featured = document.querySelector("#news-featured");
+    const mudd = document.querySelector("#news-mudd");
+    const all = document.querySelector("#news-all");
+
+    for (var i=0; i < length(UPDATES); i++) {
+        const update = UPDATES[i];
+        if (update.featured) {
+
+        }
+    }
+}
+
+// Load the website
 document.addEventListener('DOMContentLoaded', () =>{change_pages("home");
     // Run starting functions
     nav_buttons();
