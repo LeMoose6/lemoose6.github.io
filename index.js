@@ -112,5 +112,5 @@ document.addEventListener('DOMContentLoaded', () =>{change_pages("home");
     add_news();
 
     // In Progress Warning
-alert("Welcome to the LeMoose Website! Our Judy Mudd and News pages are currently still under development. These features will be prepared before March 2024, thank you for your understanding!");
+    alert("Welcome to the LeMoose Website! Our Judy Mudd and News pages are currently still under development. These features will be prepared before March 2024, thank you for your understanding!");
 });
