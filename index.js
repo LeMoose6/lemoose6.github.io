@@ -103,10 +103,12 @@ function add_news() {
     }
 }
 
-// Extras
-function playAudio() {
-    const audio = document.querySelector('#greeting-audio');
-    audio.play();
+function judy_mudd_easter_egg() {
+    document.querySelectorAll('.judy-mudd-holiday-ad').forEach(img => {
+        img.addEventListener('click', () => {
+            document.querySelector('#hello-judy').play();
+        });
+    });
 }
 
 // Load the website
@@ -117,8 +119,8 @@ document.addEventListener('DOMContentLoaded', () =>{change_pages("home");
     latest_news();
     add_news();
 
-    // In Progress Warning
-    alert("Welcome to the LeMoose Website! Our Judy Mudd and News pages are currently still under development. These features will be prepared before March 2024, thank you for your understanding!");
-
+    judy_mudd_easter_egg();
     
+    // In Progress Warning
+    alert("Welcome to the LeMoose Website! Our Judy Mudd and News pages are currently still under development. These features will be prepared before March 2024, thank you for your understanding!");   
 });
