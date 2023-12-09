@@ -103,6 +103,12 @@ function add_news() {
     }
 }
 
+// Extras
+function playAudio() {
+    const audio = document.querySelector('#greeting-audio');
+    audio.play();
+}
+
 // Load the website
 document.addEventListener('DOMContentLoaded', () =>{change_pages("home");
     // Run starting functions
@@ -113,4 +119,6 @@ document.addEventListener('DOMContentLoaded', () =>{change_pages("home");
 
     // In Progress Warning
     alert("Welcome to the LeMoose Website! Our Judy Mudd and News pages are currently still under development. These features will be prepared before March 2024, thank you for your understanding!");
+
+    
 });
