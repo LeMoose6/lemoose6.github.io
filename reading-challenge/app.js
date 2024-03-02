@@ -5,7 +5,7 @@ const INFO = document.querySelector('#information');
 function create_view() {
     INFO.innerHTML = '';
     MONTHS.forEach(month => {
-    INFO.innerHTML += `<tr><td>${month}</td><td><input type="number" id="${month}-on"></td><td><input type="number" id="${month}-off"></td><td>score: <span id="${month}-score"></span></td></tr><br>`;
+    INFO.innerHTML += `<tr><td>${month}</td><td><input type="number" id="${month}-on"></td><td><input type="number" id="${month}-off"></td><td><span id="${month}-score"></span></td></tr><br>`;
     })
 }
 
