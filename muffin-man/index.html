@@ -1,1 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Muffin Man Game</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body>
+    <!-- Homepage -->
+    <div id="homepage" class="page">
+        <h1>OH NO! The Muffin Man Needs HELP!</h1>
+        <div class="container my-3" style="width: 30%;">
+            <img class="img-fluid" src="images/muffin-man.png" alt="The Muffin Man">
+        </div>
+        <button data-target="intro" type="button" class="btn btn-primary btn-lg">Begin</button>
+    </div>
 
+    <!-- Intro -->
+    <div id="intro" class="page">
+        <h1>WELCOME</h1>
+        <p>The evil muffin stealer has come out of Culver's after fat shaming!</p>
+        <div class="container my-3" style="width: 30%;">
+            <img class="img-fluid" src="images/muffin-stealer.png" alt="The Muffin Stealer">
+        </div>
+        <p>She is world renowned for stealing spoons, forks, and lids. Now she is plotting to steal the muffin man's muffins because they make you <strong>fat</strong>!</p>
+        <p>You need to help the muffin man to <strong>save the muffins</strong>!</p>
+        <button data-target="level-1" type="button" class="btn btn-primary btn-lg">Save the Muffins</button>
+    </div>
+    
+    <!-- Level 1-->
+    <div id="level-1" class="page">
+        <h1>Uh Oh!</h1>
+        <p>The muffin stealer has already stolen 10 muffins, and 30 spoons. Distract her by giving her something else to steal!</p>
+        <input id="lvl-1-input" class="my-2 form-control form-control-lg" type="text" placeholder="Distraction">
+        <button data-target="level-1" id="lvl-1-submit" type="button" class="btn btn-primary btn-lg">Distract</button>
+    </div>
+
+    <div id="level-1-loss" class="page">
+        <h1>Stabbed</h1>
+        <p>The Muffin Stealer stabbed you with the knife</p>
+        <div class="container my-3" style="width: 30%;">
+            <img class="img-fluid" src="images/muffin-stealer-evil.jpg" alt="The Muffin Stealer Evil">
+        </div>
+        <button data-target="intro" type="button" class="btn btn-primary btn-lg">Restart</button>
+    </div>
+
+    <!-- Level 2 -->
+    <div id="level-2" class="page">
+        <h1>Boxes</h1>
+        <p>The muffin stealer is adopting a dog. She's letting you pick which she adopts. Two boxes have a rabid pitbull trained in Russia to kill anyone it sees, the others have a safer dog</p>
+        <button data-target="level-2-loss" type="button" class="btn btn-outline-danger mx-2">Box 1</button>
+        <button data-target="level-2-loss" type="button" class="btn btn-outline-danger mx-2">Box 2</button>
+        <button data-target="level-3" type="button" class="btn btn-outline-danger mx-2">Box 3</button>
+    </div>
+
+    <div id="level-2-loss" class="page">
+        <h1>Dead</h1>
+        <p>The pitbull ate you once you opened the box</p>
+        <div class="container my-3" style="width: 30%;">
+            <img class="img-fluid" src="images/pitbull.jpeg" alt="Killer Pitbull">
+        </div>
+        <button data-target="intro" type="button" class="btn btn-primary btn-lg">Restart</button>
+    </div>
+
+    <!-- Level 3 -->
+    <div id="level-3" class="page">
+        <h1>Pomerainian</h1>
+        <p>Phew! The dog was only a Pomerainian, but just in case it's a <strong>robot</strong> we should get rid of it. Where should we put it?</p>
+        <button data-location="outside" data-target="level-4" type="button" class="lvl-3 btn btn-outline-secondary mx-2">Outside</button>
+        <button data-location="kitchen" data-target="level-3-loss-kit" type="button" class="lvl-3 btn btn-outline-secondary mx-2">The Kitchen</button>
+        <button data-location="bathroom" data-target="level-4" type="button" class="lvl-3 btn btn-outline-secondary mx-2">The Bathroom</button>
+        <button data-location="living" data-target="level-4" type="button" class="lvl-3 btn btn-outline-secondary mx-2">The Living Room</button>
+        <button data-location="laundry" data-target="level-4" type="button" class="lvl-3 btn btn-outline-secondary mx-2">The Laundry Room</button>
+        <button data-location="dining" data-target="level-3-loss-dr" type="button" class="lvl-3 btn btn-outline-secondary mx-2">The Dining Room</button>
+    </div>
+    <div id="level-3-loss-kit" class="page">
+        <h1>Muffins Shit On</h1>
+        <p>Oh No! The Pomerainian took a big fat shit on the muffins</p>
+        <div class="container my-3" style="width: 30%;">
+            <img class="img-fluid" src="images/dog-pooping.jpg" alt="Pomerainian Pooping">
+        </div>
+        <button data-target="intro" type="button" class="btn btn-primary btn-lg">Restart</button>
+    </div>
+    <div id="level-3-loss-dr" class="page">
+        <h1>Eaten Alive</h1>
+        <p>The Muffin Stealer find out you let a dog on her carpet and makes the robot dog eat you.</p>
+        <div class="container my-3" style="width: 30%;">
+            <img class="img-fluid" src="images/muffin-stealer-evil.jpg" alt="The Muffin Stealer Evil">
+        </div>
+        <button data-target="intro" type="button" class="btn btn-primary btn-lg">Restart</button>
+    </div>
+
+    <!-- Level 4 -->
+    <div id="level-4" class="page">
+        <h1>Scam</h1>
+        <p>We need to create another distraction, log into her amazon so I can buy something</p>
+        <input class="my-2 form-control form-control-lg" disabled type="email" value="muffin.stealer@yahoo.com">
+        <input id="lvl-4-input" class="my-2 form-control form-control-lg" type="password" placeholder="password">
+        <button data-target="level-4" id="lvl-4-submit" type="button" class="btn btn-primary btn-lg">Login</button>
+        <p>Disclaimer: This is not really her password...<strong>hopefully</strong></p>
+    </div>
+
+    <!-- Level 5 -->
+    <div id="level-5" class="page">
+        <h1>To The Kitchen</h1>
+        <p>We've almost saved the muffins, we just need to get them from the kitchen</p>
+        <p>While we're here we'll get some water, to hydrate. But there's only 2 cups left, a sippy cup or a moldy pizza restaurant cup</p>
+        <button data-cup="sippy" data-target="level-5-loss-sip" type="button" class="lvl-5 btn btn-outline-success mx-2">Sippy Cup</button>
+        <button data-cup="moldy" data-target="level-5-loss-mold" type="button" class="lvl-5 btn btn-outline-success mx-2">Moldy Pizza Restaurant Cup</button>
+    </div>
+    <div id="level-5-loss-sip" class="page">
+        <h1>Soggy Muffins</h1>
+        <p>The Muffin Stealer stole the lid and now all the muffins are soggy and ruined</p>
+        <button data-target="intro" type="button" class="btn btn-primary btn-lg">Restart</button>
+    </div>
+    <div id="level-5-loss-mold" class="page">
+        <h1>Mold Poisoning</h1>
+        <p>You died from the poison in the mold</p>
+        <div class="container my-3" style="width: 30%;">
+            <img class="img-fluid" src="images/mold-cup.jpeg" alt="Very Moldy Cup">
+        </div>
+        <button data-target="intro" type="button" class="btn btn-primary btn-lg">Restart</button>
+    </div>
+
+    <!-- Level 6 -->
+    <div id="level-6" class="page">
+        <h1>Escape</h1>
+        <p>Now we need to escape! Go through the living room to get into the laundry room</p>
+        <button data-target="win" type="button" class="btn btn-primary btn-lg">Go!</button>
+    </div>
+    <div id="level-6-loss-eaten" class="page">
+        <h1>Muffins Eaten</h1>
+        <p>When going through, you had left the in your path and ate all the muffins!</p>
+        <div class="container my-3" style="width: 30%;">
+            <img class="img-fluid" src="images/dog-eat-muffins.jpg" alt="Dog eating muffins">
+        </div>
+        <button data-target="intro" type="button" class="btn btn-primary btn-lg">Restart</button>
+    </div>
+
+    <!-- You WIN -->
+    <div id="win" class="page">
+        <h1>WINNER</h1>
+        <p>You saved the muffins from the muffin stealer! Here's your reward</p>
+        <div class="container my-3" style="width: 90%;">
+            <video id="movie" class="img-fluid" src="images/video.mov"></video>
+        </div>
+    </div>
+
+    <!-- Javascript -->
+    <script src="app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>
