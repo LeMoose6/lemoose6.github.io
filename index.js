@@ -22,7 +22,7 @@ function change_pages(page) {
     // If the page is the library, redirect the user to the library website
     if (page === 'library') {
         alert("You are going to be redirected to the library");
-        open("https://librarycat.org/lib/lemoose6")
+        open("https://nils.librarika.com")
     }
 
 }
