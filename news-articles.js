@@ -1,5 +1,6 @@
 // Use the following JSON template for each "article": {"title": [title], "date": [date in Month, Day], "content":  [the actual announcement], "featured": [bool - is it important], "mudd": [bool - does it relate to judy mudd]}
-const UPDATES = [,
+const UPDATES = [
+    {"title": "Judy Mudd II", "date": "June 22", "content":  "This summer, a new story will be added to the Judy Mudd franchise. Within a month the title, release, and teaser will be released", "featured": true, "mudd": true},
     {"title": "Judy Saves Christmas", "date": "December 22", "content": "This year's Muddmas special has officially released. Read Judy Saves Christmas NOW!", "featured": true, "mudd": true},
     {"title": "Title Announcement", "date": "December 9", "content": "This year's Judy Mudd holiday special is called Judy Saves Christmas. View the cover art and character list now!", "featured": true, "mudd": true},
     {"title": "Upcoming Announcement", "date": "December 5", "content": "Stay tuned this weekend for an announcement regarding this year's Judy Mudd special!", "featured": false, "mudd": true},
