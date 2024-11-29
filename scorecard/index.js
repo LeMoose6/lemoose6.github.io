@@ -29,7 +29,7 @@ function addPlayerButton() {
         PLAYERLIST.push(name);
 
         document.querySelector('#scoreReport').innerHTML += `
-            <div class="card text-center m-3" style="width: 20%;">
+            <div id="${name}" data-color="${color}" class="card text-center m-3" style="width: 20%;">
                 <div class="card-header">
                   ${name}
                 </div>
@@ -84,16 +84,27 @@ function submitScoresButton() {
 
         if (winners.length === 1) {
             document.querySelector('#winner').innerHTML = `Winner: ${winners[0][0]}`
+            const winnerCard = document.querySelector(`#${winners[0][0]}`);
+            winnerCard.classList.add(`bg-${winnerCard.dataset.color}-subtle`);
+            
         } else if (winners.length > 1) {
             let largest = ["", 0]
+            let realWinners = [];
             winners.forEach(winner => {
                 if (winner[1] > largest[1]) {
                     largest = winner;
+                    realWinners = [winner[0]]
                 } else if (winner[1] === largest[1]) {
                     largest[0] = `${largest[0]} and ${winner[0]}`
+                    realWinners.push(winner[0])
                 }
             })
             document.querySelector('#winner').innerHTML = `Winner: ${largest[0]}`
+
+            realWinners.forEach(realWinner => {
+                const winnerCard = document.querySelector(`#${realWinner}`);
+                winnerCard.classList.add(`bg-${winnerCard.dataset.color}-subtle`);
+            })
         }
     })
 }
