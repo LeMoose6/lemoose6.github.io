@@ -1,159 +1,938 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LeMoose6</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Big Brother Tracker</title>
+<style>
+  :root{
+    --bg:#0f1724;
+    --card:#0b1220;
+    --muted:#9aa7bf;
+    --accent:#00c2a8;
+    --danger:#ff6b6b;
+    --glass: rgba(255,255,255,0.04);
+    --smooth: cubic-bezier(.2,.9,.3,1);
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    min-height:100vh;
+    background:
+      radial-gradient(1200px 600px at 10% 10%, rgba(0,194,168,0.05), transparent 10%),
+      linear-gradient(180deg,#071022 0%, #081726 40%, #071b2a 100%);
+    color:#e6eef6;
+    padding:18px;
+  }
+  h1{margin:0;font-size:20px;letter-spacing:0.2px}
+  .app{
+    display:grid;
+    grid-template-columns: 320px 1fr 360px;
+    gap:16px;
+    align-items:start;
+  }
+  .panel{
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius:12px;
+    padding:12px;
+    box-shadow: 0 6px 18px rgba(2,6,23,0.6);
+    border: 1px solid rgba(255,255,255,0.03);
+  }
+  .left .players{max-height:68vh;overflow:auto;padding-right:6px}
+  .player{
+    display:flex;align-items:center;gap:8px;padding:8px;border-radius:8px;
+    transition:background-color 180ms var(--smooth), transform 160ms var(--smooth);
+  }
+  .player:hover{background:var(--glass);transform:translateY(-2px)}
+  .avatar{
+    width:36px;height:36px;border-radius:8px;flex:0 0 36px;display:flex;align-items:center;justify-content:center;
+    font-weight:600;color:#051220;
+  }
+  .meta{flex:1}
+  .meta .name{font-weight:600}
+  .meta .small{font-size:12px;color:var(--muted);margin-top:2px}
+  .player-controls{display:flex;flex-direction:column;gap:6px}
+  button,select,input{font-family:inherit}
+  .btn{
+    background:transparent;border:1px solid rgba(255,255,255,0.06);padding:6px 8px;border-radius:8px;color:var(--muted);
+    cursor:pointer;font-size:13px;
+  }
+  .btn.primary{background:linear-gradient(90deg,var(--accent),#00a38f);color:#051220;border:none}
+  .btn.ghost{background:transparent}
+  .controls{display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+  .center{
+    display:flex;flex-direction:column;gap:12px;
+  }
+  .card{padding:12px;border-radius:10px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.02)}
+  .row{display:flex;gap:8px;align-items:center}
+  .vote-bars{display:flex;flex-direction:column;gap:10px;margin-top:6px}
+  .bar-wrap{display:flex;align-items:center;gap:10px}
+  .bar {
+    height:28px;background:rgba(255,255,255,0.04);border-radius:999px;flex:1;position:relative;overflow:hidden;border:1px solid rgba(0,0,0,0.2)
+  }
+  .bar-fill{height:100%;width:0%;transition:width 420ms var(--smooth);display:flex;align-items:center;padding-left:12px;font-weight:700}
+  .count{width:44px;text-align:right;font-variant-numeric:tabular-nums;font-weight:700}
+  .ticker{height:36px;display:flex;align-items:center;gap:10px;overflow:hidden}
+  .ticker p{margin:0;color:var(--muted);white-space:nowrap;animation:scroll 12s linear infinite}
+  @keyframes scroll{0%{transform:translateX(100%)}100%{transform:translateX(-100%)}}
+  .small{font-size:13px;color:var(--muted)}
+  .alliance-tag{padding:6px 8px;border-radius:999px;font-weight:600;color: #051220}
+  .mode-toggle{display:flex;gap:6px}
+  .nominees{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+  .nom{padding:6px 10px;border-radius:8px;background:rgba(255,255,255,0.02);cursor:pointer;border:1px solid rgba(255,255,255,0.03)}
+  .nom.active{outline:3px solid rgba(255,255,255,0.03);transform:translateY(-2px);}
+  .right .section{margin-bottom:12px}
+  .history{max-height:42vh;overflow:auto;padding-right:6px}
+  .log-item{padding:8px;border-radius:8px;background:rgba(255,255,255,0.02);margin-bottom:6px;font-size:13px}
+  .sim-list{display:flex;flex-direction:column;gap:6px}
+  input[type="text"], select {background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px;border-radius:8px;color:inherit}
+  footer{margin-top:18px;color:var(--muted);font-size:13px;text-align:center}
+  .muted{color:var(--muted)}
+  .controls-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .legend{display:flex;gap:8px;flex-wrap:wrap}
+  .mini{font-size:12px;color:var(--muted)}
+  .danger{background:linear-gradient(90deg,var(--danger),#ff8f8f);color:#051220;border:none}
+  .stat{display:flex;align-items:center;gap:8px;padding:8px;border-radius:8px;background:rgba(255,255,255,0.02)}
+  .center-col{display:flex;flex-direction:column}
+  /* responsive */
+  @media (max-width:1100px){.app{grid-template-columns: 1fr;}}
+</style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar sticky-top border-bottom border-6 border-success navbar-expand-lg bg-success-subtle">
-        <div class="container-fluid">
-            <div class="navbar-brand nav-link" data-page="home">LeMoose6</div>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse me-auto mb-2 mb-lg-0" id="navbar">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <div class="nav-link" data-page="judymudd">Judy Mudd</div>
-                    </li>
-                </ul>
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <div class="nav-link" data-page="news">News</div>
-                    </li>
-                </ul>
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <div class="nav-link" data-page="games">Games</div>
-                    </li>
-                </ul>
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <div class="nav-link" data-page="library">Library</div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+  <h1>Big Brother — Vote Tracker</h1>
+  <div class="mode-toggle">
+    <label class="small muted">Mode:</label>
+    <select id="modeSelect" title="Choose tracker mode">
+      <option value="eviction">Regular Eviction</option>
+      <option value="final2">Final 2 / Jury</option>
+    </select>
+  </div>
+</div>
 
-    <!-- Homepage -->
-    <div id="home" class="page container-fluid text-center">
-        <div class="row bg-dark py-3">
-            <!-- Filler Column -->
-            <div class="col-1"></div>
-            
-            <!-- Featured Content Carousel-->
-            <div class="col-md-4 col-10 g-0">
-                <h2 class="text-light py-1">Featured Content</h2>
-                <div class="carousel slide py-2" data-bs-ride="carousel">
-                    <div class="carousel-inner">
-                        <div class="carousel-item active" data-link="/file/judy-mudd-1.pdf">
-                            <img src="images/judy-mudd-1.png" class="d-block w-100" alt="To Kill a Judithbird">
-                            <div class="carousel-caption d-none d-md-block">
-                                <a role="button" class="btn-lg btn-primary btn" href="/file/judy-mudd-1.pdf" target="_blank">Read Now</a>
-                            </div>
-                        </div>
-                        <div class="carousel-item" data-link="/file/judy-mudd-holiday-22.pdf">
-                            <img src="images/judy-mudd-holiday-22.png" class="d-block w-100" alt="A Miracle on Judy Mudd Street">
-                            <div class="carousel-caption d-none d-md-block">
-                                <a role="button" class="btn-lg btn btn-primary" href="/file/judy-mudd-holiday-22.pdf" target="_blank">Read Now</a>
-                            </div>
-                        </div>
-						<div class="carousel-item" data-link="/file/judy-mudd-holiday-23.pdf">
-							<img src="images/judy-mudd-holiday-23.png" class="d-block w-100" alt="Judy Saves Christmas">
-							<div class="carousel-caption d-none d-md-block">
-								<a role="button" class="btn-lg btn btn-primary" href="/file/judy-mudd-holiday-23.pdf" target="_blank">Read Now</a>
-							</div>
-						</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Filler Column-->
-            <div class="col-1"></div>
-	    <div class="col-1"></div>
-            
-            <!-- Latest News -->
-            <div class="col-md-4 col-10">
-                <h2 class="text-light py-1">Latest News</h2>
-                <div class="card g-2">
-                    <div class="card-header">
-                        <h6 id="latest-date">Most Recent: </h6>
-                    </div>
-                    <div class="card-body">
-                        <p class="card-text" id="latest-content"></p>
-                    </div>
-                </div>
-                <div text-dark>spacer</div>
-                <div class="card g-2">
-                    <div class="card-header">
-                        <h6 id="featured-date">Recently Featured: </h6>
-                    </div>
-                    <div class="card-body">
-                        <p class="card-text" id="featured-content"></p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Filler Column -->
-            <div class="col-1"></div>
-        </div>
-		<div class="row bg-success">
-	    	<div class="col-12">
-            	<a href="file/judy-mudd-holiday-23.pdf" target="_blank"><img src="/images/judy-mudd-holiday-ad-23.jpg" class="judy-mudd-holiday-ad d-block w-100" alt="Judy Mudd Landscape Poster"></a>
-	    	</div>
-		</div>
+<div class="app">
+  <!-- LEFT: Players / Alliances -->
+  <div class="panel left">
+    <div class="controls-row" style="margin-bottom:8px">
+      <input id="playerName" type="text" placeholder="Player name" />
+      <input id="allianceName" type="text" placeholder="Alliance (optional)" />
+      <button id="addPlayer" class="btn primary">Add</button>
+      <button id="clearAll" class="btn" title="Clear all players & votes">Reset</button>
     </div>
 
-    <div id="judymudd" class="page container-fluid bg-dark text-light text-center" style="display: none;">
-	    <div class="row bg-success">
-	        <div class="col-12">
-                <a href="file/judy-mudd-holiday-23.pdf" target="_blank"><img src="/images/judy-mudd-holiday-ad-23.jpg" class="judy-mudd-holiday-ad d-block w-100" alt="Judy Mudd Landscape Poster"></a>
-	        </div>
-	    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <div class="small muted">Players</div>
+      <div class="mini muted">Click a player to cast/modify vote</div>
     </div>
 
-    <div id="news" class="page container-fluid bg-dark text-light" style="display:none">
-        <div id="news-featured-outer" class="container-fluid" style="padding: 1.5rem; padding-top: 0.5rem">
-            <h2>Featured News</h2>
-            <div id="news-featured" class="container-fluid row" style="display: flex; flex-wrap: nowrap; overflow-x: scroll;"></div>
-        </div>
-        <div id="news-mudd-outer" class="container-fluid" style="padding: 1.5rem">
-            <h2>Judy Mudd News</h2>
-            <div id="news-mudd" class="container-fluid row" style="display: flex; flex-wrap: nowrap; overflow-x: scroll;"></div>
-        </div>
-        <div id="news-all-outer" class="container-fluid" style="padding: 1.5rem;">
-            <h2>All News</h2>
-            <div id="news-all" class="container-fluid row" style="display: flex; flex-wrap: nowrap; overflow-x: scroll;"></div>
-        </div>
-    </div>
-    <div id="games" class="page container-fluid bg-dark text-light text-center" style="display: none;">
-        COMING AT SOME POINT
+    <div class="players card" id="playersList"></div>
+
+    <div style="margin-top:10px" class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div><strong>Alliances</strong><div class="mini muted">Auto colors</div></div>
+        <div class="legend" id="legend"></div>
+      </div>
     </div>
 
-    <div id="library" class="page container-fluid bg-dark text-light text-center" style="display: none;">
-        <p>If you have not been redirected to the library please try again or click the button below</p>
-        <a href="https://nils.librarika.com" role="button" class="btn btn-primary btn-large" target="_blank">To Library</a>
-        <a href="/file/library-rules.pdf" role="button" class="btn btn-primary btn-large" target="_blank">Library Rules</a>
+  </div>
+
+  <!-- CENTER: Live vote tracker & nominees -->
+  <div class="panel center">
+    <div class="row" style="justify-content:space-between;align-items:center">
+      <div>
+        <div class="small muted">Live Vote Tracker</div>
+        <div class="muted mini">Animated bars update as votes are cast</div>
+      </div>
+      <div class="controls">
+        <button id="predictBtn" class="btn">Predict Votes</button>
+        <button id="simulateBtn" class="btn">Run MC Simulation</button>
+        <button id="saveBtn" class="btn">Save</button>
+        <button id="loadBtn" class="btn">Load</button>
+      </div>
     </div>
-    
-    <!-- Footer -->
-    <nav class="navbar bg-black text-white">
-        <div class="container-fluid">
-            © Copyright 2024 Nielsen Fotis
+
+    <div class="card" style="margin-top:8px">
+      <div class="row">
+        <div style="flex:1">
+          <div class="small muted">Nominees / Finalists</div>
+          <div class="nominees" id="nomineeList"></div>
         </div>
-    </nav>
+        <div style="width:220px">
+          <div class="small muted">Ticker</div>
+          <div class="ticker card" id="ticker"><p id="tickerText">No votes yet</p></div>
+        </div>
+      </div>
 
-    <audio id="hello-judy">
-        <source src="/file/greeting.mp3" type="audio/mpeg">
-    </audio>
+      <div style="margin-top:12px">
+        <div class="vote-bars" id="bars"></div>
+      </div>
+    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-    <script src="news-articles.js"></script>
-    <script src="index.js"></script>
-</body>
-</html>
+    <div class="card" style="margin-top:12px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div><strong>Predictor</strong><div class="mini muted">Estimates based on alliances & history</div></div>
+        <div class="mini muted">Monte Carlo uses alliance-based probabilities</div>
+      </div>
+      <div style="margin-top:8px" id="predictOutput">
+        <div class="small muted">No prediction run yet.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RIGHT: Vote log & controls -->
+  <div class="panel right">
+    <div class="section card">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div><strong>Vote History</strong><div class="mini muted">Last actions</div></div>
+        <div>
+          <button id="undoBtn" class="btn">Undo</button>
+          <button id="clearVotes" class="btn ghost">Clear votes</button>
+        </div>
+      </div>
+      <div class="history" id="history"></div>
+    </div>
+
+    <div class="section card" style="margin-top:12px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div><strong>Mode Controls</strong></div>
+      </div>
+      <div style="margin-top:8px;display:flex;flex-direction:column;gap:8px">
+        <div class="row">
+          <label class="small muted">Mode helper:</label>
+          <div class="mini muted" id="modeHelp">Regular eviction: mark nominees, then cast votes.</div>
+        </div>
+        <div class="row">
+          <button id="toggleAllNominees" class="btn">Auto-nominate top 3 (demo)</button>
+          <button id="randomizeAlliances" class="btn">Randomize alliances</button>
+        </div>
+        <div class="row">
+          <button id="exportBtn" class="btn">Export JSON</button>
+          <button id="importBtn" class="btn">Import JSON</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="section card" style="margin-top:12px">
+      <div><strong>Stats</strong></div>
+      <div style="margin-top:8px;display:flex;flex-direction:column;gap:8px">
+        <div class="stat"><div class="mini muted">Players</div><div style="margin-left:auto" id="statPlayers">0</div></div>
+        <div class="stat"><div class="mini muted">Votes cast</div><div style="margin-left:auto" id="statVotes">0</div></div>
+        <div class="stat"><div class="mini muted">Nominees</div><div style="margin-left:auto" id="statNom">0</div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  Built with ❤️ — click any player to cast a vote. Predictor uses alliances + betrayal history. Save scenarios with Save / Load.
+</footer>
+
+<script>
+/*
+  Big Brother Tracker
+  Single-file HTML/CSS/JS.
+  Features:
+    - player management (name, alliance)
+    - alliances auto-colored
+    - mark nominees/finalists
+    - click a voter to assign their vote to a nominee/finalist
+    - live vote bars + ticker
+    - vote history & undo
+    - predictor: alliance-based probability model + Monte Carlo simulation
+    - save/load via localStorage, export/import JSON
+*/
+
+const stateKey = 'bb_tracker_state_v1';
+
+const defaultAllColors = [
+  '#FDE68A','#A7F3D0','#BFDBFE','#FBCFE8','#FECACA','#E9D5FF','#C7F9CC','#FFD8A8','#D4E4FF'
+];
+
+let state = {
+  players: [], // {id,name,alliance,color,avatarShort}
+  votes: {},   // voterId -> targetId
+  nominees: [],// array of nominee IDs (in eviction) or finalists (final2)
+  history: [], // actions for undo {type:'vote'|'nom'|'add'..., payload}
+  mode: 'eviction', // or 'final2'
+  alliances: {} // name -> color
+};
+
+// helpers
+const $ = sel => document.querySelector(sel);
+const $$ = sel => Array.from(document.querySelectorAll(sel));
+
+function saveState(){
+  localStorage.setItem(stateKey, JSON.stringify(state));
+}
+
+function loadState(){
+  const raw = localStorage.getItem(stateKey);
+  if(raw){
+    try{
+      state = JSON.parse(raw);
+    }catch(e){
+      console.warn('Failed to parse saved state',e);
+    }
+  }
+}
+
+function uid(prefix='id'){
+  return prefix+'_'+Math.random().toString(36).slice(2,9);
+}
+
+function pickAllianceColor(name){
+  if(!name) return '#94a3b8';
+  if(state.alliances[name]) return state.alliances[name];
+  const used = Object.values(state.alliances);
+  const avail = defaultAllColors.filter(c => !used.includes(c));
+  const pick = avail.length ? avail[Math.floor(Math.random()*avail.length)] : defaultAllColors[Math.floor(Math.random()*defaultAllColors.length)];
+  state.alliances[name] = pick;
+  return pick;
+}
+
+function addPlayer(name, alliance){
+  if(!name) return;
+  const id = uid('p');
+  const color = pickAllianceColor(alliance || '');
+  const avatarShort = (name.trim()[0] || '?').toUpperCase();
+  const p = {id,name: name.trim(), alliance: alliance? alliance.trim() : '', color, avatarShort};
+  state.players.push(p);
+  state.history.push({type:'addPlayer', payload:{p}});
+  persistRender();
+}
+
+function removePlayer(id){
+  const idx = state.players.findIndex(x => x.id===id);
+  if(idx>=0){
+    const removed = state.players.splice(idx,1)[0];
+    // remove votes by or for them
+    for(const v in {...state.votes}){
+      if(v===id || state.votes[v]===id) delete state.votes[v];
+    }
+    state.nominees = state.nominees.filter(n => n!==id);
+    state.history.push({type:'removePlayer', payload:{removed}});
+    persistRender();
+  }
+}
+
+function toggleNominee(id){
+  const idx = state.nominees.indexOf(id);
+  if(idx===-1){
+    state.nominees.push(id);
+    state.history.push({type:'nominate', payload:{id}});
+  } else {
+    state.nominees.splice(idx,1);
+    state.history.push({type:'unnominate', payload:{id}});
+  }
+  persistRender();
+}
+
+function setVote(voterId,targetId){
+  const prev = state.votes[voterId] || null;
+  if(targetId===null){
+    if(prev!==null){
+      delete state.votes[voterId];
+      state.history.push({type:'vote-clear',payload:{voterId,prev}});
+    }
+  } else {
+    state.votes[voterId] = targetId;
+    state.history.push({type:'vote', payload:{voterId,targetId,prev}});
+  }
+  persistRender();
+}
+
+function undo(){
+  const h = state.history.pop();
+  if(!h) return;
+  switch(h.type){
+    case 'addPlayer':
+      { const id = h.payload.p.id; state.players = state.players.filter(x=>x.id!==id);
+        // clear any votes referencing them
+        for(const v in {...state.votes}) if(v===id||state.votes[v]===id) delete state.votes[v];
+      } break;
+    case 'removePlayer':
+      state.players.push(h.payload.removed); break;
+    case 'nominate':
+      state.nominees = state.nominees.filter(x => x!==h.payload.id); break;
+    case 'unnominate':
+      state.nominees.push(h.payload.id); break;
+    case 'vote':
+      if(h.payload.prev) state.votes[h.payload.voterId] = h.payload.prev;
+      else delete state.votes[h.payload.voterId];
+      break;
+    case 'vote-clear':
+      state.votes[h.payload.voterId] = h.payload.prev; break;
+  }
+  persistRender();
+}
+
+function clearVotes(){
+  state.votes = {};
+  state.history.push({type:'clearVotes',payload:{}});
+  persistRender();
+}
+
+function resetAll(){
+  if(!confirm('Reset all tracker data? This clears players, alliances, votes, and history.')) return;
+  state = {players:[],votes:{},nominees:[],history:[],mode:state.mode,alliances:{}};
+  persistRender();
+}
+
+function persistRender(){
+  saveState();
+  renderAll();
+}
+
+function getPlayerById(id){ return state.players.find(p=>p.id===id) || null; }
+
+function nomineeLabel(id){
+  const p = getPlayerById(id);
+  return p ? p.name : '(unknown)';
+}
+
+/* UI rendering */
+function renderPlayers(){
+  const out = $('#playersList');
+  out.innerHTML = '';
+  // sort: nominees top
+  const players = [...state.players];
+  players.sort((a,b)=>{
+    const aNom = state.nominees.includes(a.id)?1:0;
+    const bNom = state.nominees.includes(b.id)?1:0;
+    if(aNom!==bNom) return bNom-aNom;
+    return a.name.localeCompare(b.name);
+  });
+  players.forEach(p=>{
+    const div = document.createElement('div');
+    div.className='player';
+    div.dataset.id=p.id;
+    div.innerHTML = `
+      <div class="avatar" style="background:${p.color}">${p.avatarShort}</div>
+      <div class="meta">
+        <div class="name">${escapeHtml(p.name)} ${state.nominees.includes(p.id) ? '<span style="font-size:12px;color:var(--muted)">• Nominee</span>':''}</div>
+        <div class="small">${p.alliance ? '<span class="alliance-tag" style="background:'+p.color+'">'+escapeHtml(p.alliance)+'</span>' : '<span class="muted">No alliance</span>'}</div>
+      </div>
+      <div class="player-controls">
+        <div style="display:flex;gap:6px">
+          <button class="btn voteBtn" title="Cast/Change vote">Vote</button>
+          <button class="btn" title="Nominate/un-nominate">Nom</button>
+          <button class="btn" title="Remove player">Del</button>
+        </div>
+      </div>
+    `;
+    out.appendChild(div);
+  });
+  // wire up events
+  $$('.player .voteBtn').forEach(btn=>{
+    btn.onclick = (e) => {
+      const id = e.target.closest('.player').dataset.id;
+      handleCastVote(id);
+    };
+  });
+  $$('.player .btn[title="Nominate/un-nominate"]').forEach(btn=>{
+    btn.onclick = (e) => {
+      const id = e.target.closest('.player').dataset.id;
+      toggleNominee(id);
+    };
+  });
+  $$('.player .btn[title="Remove player"]').forEach(btn=>{
+    btn.onclick = (e) => {
+      const id = e.target.closest('.player').dataset.id;
+      if(confirm('Remove '+getPlayerById(id).name+'? This also clears votes about them.')) removePlayer(id);
+    };
+  });
+  updateStats();
+  renderLegend();
+}
+
+function renderLegend(){
+  const el = $('#legend');
+  el.innerHTML = '';
+  for(const [name,color] of Object.entries(state.alliances)){
+    const chip = document.createElement('div');
+    chip.className='alliance-tag';
+    chip.style.background=color;
+    chip.textContent = name;
+    el.appendChild(chip);
+  }
+  if(!Object.keys(state.alliances).length){
+    el.innerHTML = '<div class="mini muted">No alliances yet</div>';
+  }
+}
+
+function updateStats(){
+  $('#statPlayers').textContent = state.players.length;
+  $('#statVotes').textContent = Object.keys(state.votes).length;
+  $('#statNom').textContent = state.nominees.length;
+}
+
+/* nominees rendering & bars */
+function renderNomineesAndBars(){
+  const nl = $('#nomineeList');
+  nl.innerHTML = '';
+  if(state.nominees.length===0){
+    nl.innerHTML = '<div class="muted mini">No nominees/finalists — click Nom on players or add manually</div>';
+  } else {
+    state.nominees.forEach(id=>{
+      const p = getPlayerById(id);
+      const btn = document.createElement('div');
+      btn.className='nom' + (isLeading(id)?' active':'');
+      btn.dataset.id=id;
+      btn.innerHTML = `<strong>${escapeHtml(p? p.name : '(unknown)')}</strong> <div class="mini muted">${p?escapeHtml(p.alliance || ''):''}</div>`;
+      btn.onclick = ()=> toggleNominee(id);
+      nl.appendChild(btn);
+    });
+  }
+
+  // bars
+  const bars = $('#bars');
+  bars.innerHTML = '';
+  const nominees = state.nominees.map(id => getPlayerById(id)).filter(Boolean);
+  if(nominees.length===0){
+    bars.innerHTML = `<div class="mini muted">No nominees to show.</div>`;
+    $('#tickerText').textContent = 'No votes yet';
+    return;
+  }
+
+  // tally counts:
+  const counts = {};
+  nominees.forEach(n => counts[n.id]=0);
+  for(const [voter,target] of Object.entries(state.votes)){
+    if(counts[target]!==undefined) counts[target]++;
+  }
+
+  // render each
+  nominees.forEach(n => {
+    const wrap = document.createElement('div');
+    wrap.className='bar-wrap';
+    const lbl = document.createElement('div');
+    lbl.style.width='170px';
+    lbl.innerHTML = `<div style="font-weight:700">${escapeHtml(n.name)}</div><div class="mini muted">${escapeHtml(n.alliance||'')}</div>`;
+    const bar = document.createElement('div');
+    bar.className='bar';
+    const fill = document.createElement('div');
+    fill.className='bar-fill';
+    fill.style.background = n.color;
+    fill.style.width = '0%';
+    fill.textContent = '';
+    bar.appendChild(fill);
+    const cnt = document.createElement('div');
+    cnt.className='count';
+    cnt.textContent = counts[n.id] || 0;
+    wrap.appendChild(lbl);
+    wrap.appendChild(bar);
+    wrap.appendChild(cnt);
+    bars.appendChild(wrap);
+
+    // animate width based on percent
+    const total = Math.max(1, Object.keys(state.votes).filter(v=> Object.keys(counts).includes(state.votes[v]) ).length);
+    const pct = Math.round((counts[n.id] / total) * 100);
+    setTimeout(()=>{ fill.style.width = pct + '%'; fill.textContent = pct>8 ? pct+'%' : ''; }, 40);
+  });
+
+  // ticker
+  const top = Object.keys(counts).sort((a,b)=>counts[b]-counts[a])[0];
+  const leading = top ? nomineeLabel(top)+ ' leading ⟶ ' + counts[top] + ' votes' : 'No votes yet';
+  $('#tickerText').textContent = leading;
+}
+
+/* vote casting UI */
+let voterSelecting = null;
+function handleCastVote(voterId){
+  // show a simple modal-ish chooser (but in-place)
+  const voter = getPlayerById(voterId);
+  if(!voter) return;
+  voterSelecting = voterId;
+  // Build chooser
+  const chooser = document.createElement('div');
+  chooser.style.position='fixed';
+  chooser.style.left='50%';
+  chooser.style.top='50%';
+  chooser.style.transform='translate(-50%,-50%)';
+  chooser.style.zIndex=9999;
+  chooser.style.minWidth='320px';
+  chooser.style.borderRadius='12px';
+  chooser.style.padding='12px';
+  chooser.style.boxShadow='0 12px 40px rgba(2,6,23,0.7)';
+  chooser.style.background='linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01))';
+  chooser.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <div><strong>Cast vote for ${escapeHtml(voter.name)}</strong><div class="mini muted">Select a target</div></div>
+      <div><button id="closeChooser" class="btn">Close</button></div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px" id="targetsWrap"></div>
+    <div style="display:flex;justify-content:space-between;gap:8px">
+      <button id="clearVote" class="btn ghost">Clear vote</button>
+      <div style="display:flex;gap:8px">
+        <button id="randomVote" class="btn">Random</button>
+        <button id="confirmVote" class="btn primary">Confirm</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(chooser);
+  const tw = chooser.querySelector('#targetsWrap');
+  // populate targets (nominees)
+  const targets = state.nominees.length ? state.nominees : state.players.map(p=>p.id);
+  targets.forEach(tid=>{
+    const p = getPlayerById(tid);
+    const btn = document.createElement('div');
+    btn.className='nom';
+    btn.style.cursor='pointer';
+    btn.dataset.target = tid;
+    btn.innerHTML = `<strong>${escapeHtml(p.name)}</strong><div class="mini muted">${escapeHtml(p.alliance||'')}</div>`;
+    btn.onclick = ()=> {
+      // mark selection
+      tw.querySelectorAll('.nom').forEach(n=>n.style.outline='none');
+      btn.style.outline = '3px solid rgba(255,255,255,0.06)';
+      chooser.dataset.selected = tid;
+    };
+    tw.appendChild(btn);
+  });
+
+  chooser.querySelector('#closeChooser').onclick = ()=>{ chooser.remove(); voterSelecting=null; };
+  chooser.querySelector('#clearVote').onclick = ()=> { setVote(voterId,null); chooser.remove(); voterSelecting=null; };
+  chooser.querySelector('#randomVote').onclick = ()=> {
+    const pick = targets[Math.floor(Math.random()*targets.length)];
+    chooser.dataset.selected = pick;
+    chooser.querySelector(`[data-target="${pick}"]`).style.outline='3px solid rgba(255,255,255,0.06)';
+  };
+  chooser.querySelector('#confirmVote').onclick = ()=>{
+    const sel = chooser.dataset.selected;
+    if(!sel){ alert('Pick a target first'); return; }
+    setVote(voterId, sel);
+    chooser.remove(); voterSelecting=null;
+  };
+}
+
+/* predictor */
+function estimateProbabilities(){
+  // For each voter, estimate probability they vote for each nominee.
+  // Simple model:
+  //  - If voter and candidate share alliance -> base 0.85
+  //  - If in different alliances but there is alliance (non-empty) -> 0.25
+  //  - If candidate has no alliance -> 0.35
+  //  - If voter has no alliance -> 0.38
+  // Add minor random noise based on past betrayals: if voter previously voted against alliance member, cut alliance loyalty.
+  const nominees = state.nominees.slice();
+  if(nominees.length===0) return null;
+  const probs = {}; // candidateId -> expected votes sum
+  nominees.forEach(n=>probs[n]=0);
+
+  // compute betrayals: count times voter voted against alliance member in history
+  const betrayals = {}; // voterId -> count
+  state.history.forEach(h=>{
+    if(h.type==='vote' && h.payload.prev && h.payload.prev !== h.payload.target){
+      // can't detect easily - skip complex historical parse for now
+    }
+    // also count explicit vote-clear as not betrayal.
+  });
+
+  // For each voter (everyone except nominees if they can't vote in final?), allow self-voting? big brother: houseguests vote except nominees can also vote. We'll allow everyone to vote.
+  state.players.forEach(v=>{
+    const vAll = v.alliance || '';
+    // For each candidate compute a raw prob score
+    let rawTotal=0;
+    const raw = {};
+    nominees.forEach(nid=>{
+      const n = getPlayerById(nid);
+      const nAll = n.alliance || '';
+      let score = 0.2;
+      if(v.id === nid) {
+        // self-target low chance
+        score = 0.01;
+      } else if(vAll && nAll && vAll === nAll){
+        score = 0.85;
+      } else if(!vAll && nAll){
+        score = 0.38;
+      } else if(nAll && vAll && vAll !== nAll){
+        score = 0.25;
+      } else if(!nAll && !vAll){
+        score = 0.27;
+      }
+      // if voter has previously voted against an alliance member (very rough detection)
+      const b = betrayals[v.id] || 0;
+      if(b>0) score *= Math.max(0.4, 1 - b*0.15);
+      // small randomness floor
+      score = Math.max(0.01, score);
+      raw[nid]=score;
+      rawTotal += score;
+    });
+    // normalize to probabilities
+    nominees.forEach(nid=>{
+      const p = raw[nid] / rawTotal;
+      probs[nid] += p;
+    });
+  });
+
+  // Now compute probability distribution by normalizing expected votes to percentages
+  const totalExpected = Object.values(probs).reduce((a,b)=>a+b,0) || 1;
+  const out = nominees.map(nid => ({id:nid, expected: probs[nid], pct: Math.round((probs[nid]/totalExpected)*1000)/10}));
+  return out;
+}
+
+function runMonteCarlo(sims=2000){
+  // Simulate voters casting according to estimated probabilities per voter.
+  const nominees = state.nominees.slice();
+  if(nominees.length===0) return null;
+  // build per-voter distribution
+  const perVoter = {};
+  state.players.forEach(v=>{
+    // compute probability vector across nominees similarly to estimateProbabilities but per-voter
+    const vAll = v.alliance || '';
+    const raw = [];
+    nominees.forEach(nid=>{
+      const n = getPlayerById(nid);
+      const nAll = n.alliance || '';
+      let score = 0.2;
+      if(v.id === nid) score = 0.01;
+      else if(vAll && nAll && vAll === nAll) score = 0.85;
+      else if(!vAll && nAll) score = 0.38;
+      else if(nAll && vAll && vAll !== nAll) score = 0.25;
+      else if(!nAll && !vAll) score = 0.27;
+      raw.push({id:nid,score});
+    });
+    const ssum = raw.reduce((a,b)=>a+b.score,0);
+    const probs = raw.map(r=> ({id:r.id, p: r.score/ssum}));
+    perVoter[v.id] = probs;
+  });
+
+  // run sims
+  const results = {}; nominees.forEach(n=>results[n]=[]);
+  for(let k=0;k<sims;k++){
+    const tally = {};
+    nominees.forEach(n=>tally[n]=0);
+    state.players.forEach(v=>{
+      const probs = perVoter[v.id];
+      // sample
+      let r = Math.random();
+      let acc=0;
+      for(const p of probs){
+        acc += p.p;
+        if(r<=acc){ tally[p.id]++; break; }
+      }
+    });
+    // record
+    nominees.forEach(n=>results[n].push(tally[n]));
+  }
+  // compute stats
+  const summary = nominees.map(nid=>{
+    const arr = results[nid].slice().sort((a,b)=>a-b);
+    const mean = arr.reduce((a,b)=>a+b,0)/arr.length;
+    const median = arr[Math.floor(arr.length/2)];
+    const p10 = arr[Math.floor(arr.length*0.1)];
+    const p90 = arr[Math.floor(arr.length*0.9)];
+    return {id:nid, mean, median, p10, p90};
+  });
+  return {summary, raw:results, sims};
+}
+
+function updatePredictOutput(){
+  const est = estimateProbabilities();
+  const container = $('#predictOutput');
+  container.innerHTML = '';
+  if(!est){ container.innerHTML = '<div class="mini muted">No nominees — predictor unavailable.</div>'; return; }
+  const list = document.createElement('div');
+  list.style.display='flex';
+  list.style.flexDirection='column';
+  list.style.gap='8px';
+  est.forEach(e=>{
+    const p = getPlayerById(e.id);
+    const row = document.createElement('div');
+    row.className='row';
+    row.style.justifyContent='space-between';
+    row.innerHTML = `<div style="display:flex;gap:8px;align-items:center"><div class="avatar" style="background:${p.color};width:30px;height:30px;border-radius:6px;font-size:14px">${p.avatarShort}</div><div><strong>${escapeHtml(p.name)}</strong><div class="mini muted">${escapeHtml(p.alliance||'')}</div></div></div><div style="text-align:right"><div style="font-weight:700">${(e.pct||0)}%</div><div class="mini muted">expected ${Math.round(e.expected*10)/10} votes (expectation)</div></div>`;
+    list.appendChild(row);
+  });
+  container.appendChild(list);
+}
+
+function showSimulation(){
+  const mc = runMonteCarlo(3000);
+  const container = $('#predictOutput');
+  container.innerHTML = '';
+  if(!mc){ container.innerHTML = '<div class="mini muted">No nominees — simulation unavailable.</div>'; return; }
+  const title = document.createElement('div');
+  title.innerHTML = `<div style="display:flex;justify-content:space-between"><div><strong>Monte Carlo Simulation (${mc.sims} trials)</strong><div class="mini muted">Range of likely vote totals</div></div></div>`;
+  container.appendChild(title);
+  const simBox = document.createElement('div');
+  simBox.style.marginTop='8px';
+  simBox.className='sim-list';
+
+  mc.summary.forEach(s=>{
+    const p = getPlayerById(s.id);
+    const el = document.createElement('div');
+    el.className='stat';
+    el.innerHTML = `<div style="display:flex;align-items:center;gap:8px"><div class="avatar" style="background:${p.color};width:34px;height:34px;border-radius:8px">${p.avatarShort}</div><div><strong>${escapeHtml(p.name)}</strong><div class="mini muted">${escapeHtml(p.alliance||'')}</div></div></div>
+    <div style="margin-left:auto;text-align:right"><div style="font-weight:800">${Math.round(s.mean*10)/10}</div><div class="mini muted">mean votes • median ${s.median} • 10–90%: ${s.p10}-${s.p90}</div></div>`;
+    simBox.appendChild(el);
+  });
+
+  container.appendChild(simBox);
+}
+
+/* small utils */
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+function isLeading(id){
+  const counts = {};
+  state.nominees.forEach(n=>counts[n]=0);
+  for(const v in state.votes) if(counts[state.votes[v]]!==undefined) counts[state.votes[v]]++;
+  const max = Math.max(...Object.values(counts));
+  return counts[id]===max && max>0;
+}
+
+function renderHistory(){
+  const el = $('#history');
+  el.innerHTML = '';
+  if(state.history.length===0){ el.innerHTML = '<div class="mini muted">No history yet</div>'; return; }
+  // show last 80 actions
+  const recent = state.history.slice(-80).reverse();
+  recent.forEach(h=>{
+    const div = document.createElement('div');
+    div.className='log-item';
+    let txt = '';
+    switch(h.type){
+      case 'addPlayer': txt = `Added player ${h.payload.p.name}`; break;
+      case 'removePlayer': txt = `Removed player ${h.payload.removed.name}`; break;
+      case 'nominate': txt = `Nominated ${getPlayerById(h.payload.id)?.name || '(unknown)'}`; break;
+      case 'unnominate': txt = `Removed nomination: ${getPlayerById(h.payload.id)?.name || '(unknown)'}`; break;
+      case 'vote': txt = `${getPlayerById(h.payload.voterId)?.name || 'Voter'} voted ${getPlayerById(h.payload.targetId)?.name || '(unknown)'}`; break;
+      case 'vote-clear': txt = `${getPlayerById(h.payload.voterId)?.name || 'Voter'} cleared vote` ; break;
+      case 'clearVotes': txt = `All votes cleared`; break;
+      default: txt = JSON.stringify(h); break;
+    }
+    div.textContent = txt;
+    el.appendChild(div);
+  });
+}
+
+/* export/import */
+function exportJSON(){
+  const data = JSON.stringify(state, null, 2);
+  const blob = new Blob([data], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'bb_tracker_export.json';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
+function importJSON(){
+  const inp = document.createElement('input');
+  inp.type='file';
+  inp.accept='application/json';
+  inp.onchange = (e)=>{
+    const file = e.target.files[0];
+    if(!file) return;
+    const r = new FileReader();
+    r.onload = ()=>{
+      try{
+        const obj = JSON.parse(r.result);
+        // very small validation
+        if(!obj.players) throw 'invalid';
+        state = obj;
+        saveState();
+        renderAll();
+        alert('Imported successfully');
+      }catch(err){
+        alert('Failed to import: '+err);
+      }
+    };
+    r.readAsText(file);
+  };
+  inp.click();
+}
+
+/* quick helpers */
+function autoNomTop3(){
+  const sorted = [...state.players]; // no votes-> random top 3
+  sorted.sort(()=>Math.random()-0.5);
+  state.nominees = sorted.slice(0, Math.min(3, sorted.length)).map(x=>x.id);
+  state.history.push({type:'autoNom',payload:{nominees: state.nominees.slice()}});
+  persistRender();
+}
+
+function randomizeAlliances(){
+  // random small clusters
+  if(state.players.length===0) return;
+  const groups = Math.max(1, Math.round(state.players.length/3));
+  const names = Array.from({length:groups},(_,i)=>'Ally '+(i+1));
+  state.players.forEach(p=>{
+    const pick = names[Math.floor(Math.random()*names.length)];
+    p.alliance = pick;
+    p.color = pickAllianceColor(p.alliance);
+  });
+  state.history.push({type:'randomizeAlliances',payload:{}});
+  persistRender();
+}
+
+function attachUI(){
+  $('#addPlayer').onclick = ()=>{
+    const name = $('#playerName').value.trim();
+    const alli = $('#allianceName').value.trim();
+    if(!name){ alert('Enter a player name'); return; }
+    addPlayer(name, alli);
+    $('#playerName').value=''; $('#allianceName').value='';
+  };
+  $('#clearAll').onclick = resetAll;
+  $('#undoBtn').onclick = undo;
+  $('#clearVotes').onclick = ()=> { if(confirm('Clear all votes?')) clearVotes(); };
+  $('#predictBtn').onclick = updatePredictOutput;
+  $('#simulateBtn').onclick = showSimulation;
+  $('#saveBtn').onclick = ()=> { saveState(); alert('Saved'); };
+  $('#loadBtn').onclick = ()=> { loadState(); renderAll(); alert('Loaded'); };
+  $('#exportBtn').onclick = exportJSON;
+  $('#importBtn').onclick = importJSON;
+  $('#toggleAllNominees').onclick = autoNomTop3;
+  $('#randomizeAlliances').onclick = randomizeAlliances;
+
+  $('#modeSelect').onchange = (e)=>{
+    state.mode = e.target.value;
+    $('#modeHelp').textContent = state.mode === 'eviction' ? 'Regular eviction: mark nominees, then cast votes.' : 'Final 2 / Jury: mark finalists, jury members cast their votes.';
+    saveState();
+    renderAll();
+  };
+  $('#modeSelect').value = state.mode || 'eviction';
+}
+
+/* initial example data for quick demo if empty */
+function seedDemo(){
+  if(state.players.length) return;
+  const demo = [
+    ['Aaliyah','Alpha'],
+    ['Ben','Beta'],
+    ['Carmen','Alpha'],
+    ['Derrick','Gamma'],
+    ['Evan','Beta'],
+    ['Faye',''],
+    ['Greg','Gamma'],
+    ['Hana','Alpha']
+  ];
+  demo.forEach(d=> addPlayer(d[0], d[1]));
+  // auto nominate three for demo
+  state.nominees = state.players.slice(0,3).map(p=>p.id);
+  saveState();
+}
+
+/* main render */
+function renderAll(){
+  renderPlayers();
+  renderNomineesAndBars();
+  renderHistory();
+  updatePredictOutput();
+}
+
+/* init */
+(function init(){
+  loadState();
+  attachUI();
+  seedDemo();
+  renderAll();
+})();
+
+</script>
