@@ -2,381 +2,377 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Big Brother Tracker</title>
+  <title>Big Brother: Hotel Mystère Tracker</title>
   <style>
-    :root {
-      --primary: #d32f2f;
-      --secondary: #1976d2;
-      --background: #f9f9f9;
-      --panel: #fff;
-      --border: #ddd;
-    }
     body {
+      font-family: 'Trebuchet MS', sans-serif;
+      background: linear-gradient(to bottom right, #0e0b16, #2c1a27);
+      color: #f8f8f8;
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: var(--background);
-      color: #333;
+      height: 100vh;
       display: flex;
       flex-direction: column;
-      min-height: 100vh;
     }
     header {
-      background: var(--primary);
-      color: #fff;
-      padding: 1rem;
+      background: #1f0d1d;
+      color: #e5c07b;
       text-align: center;
-      font-size: 1.5rem;
+      padding: 1rem;
+      font-size: 1.8rem;
       font-weight: bold;
+      letter-spacing: 2px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.6);
     }
     nav {
+      background: #241423;
       display: flex;
-      background: #444;
-      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      padding: 0.5rem;
     }
     nav button {
-      flex: 1;
-      padding: 0.8rem;
-      background: #444;
-      color: white;
+      background: #3e223a;
+      color: #f8f8f8;
       border: none;
+      padding: 0.6rem 1rem;
+      border-radius: 6px;
       cursor: pointer;
+      font-weight: bold;
+      transition: all 0.2s ease;
     }
-    nav button.active {
-      background: var(--secondary);
+    nav button:hover, nav button.active {
+      background: #e5c07b;
+      color: #1f0d1d;
     }
     main {
       flex: 1;
+      display: flex;
+      justify-content: center;
       padding: 1rem;
     }
     section {
       display: none;
-      background: var(--panel);
-      border-radius: 8px;
-      padding: 1rem;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      width: 90%;
+      max-width: 1000px;
+      background: #1a1120;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 15px rgba(0,0,0,0.6);
+      animation: fadeIn 0.4s ease;
     }
     section.active { display: block; }
-    h2 {
-      margin-top: 0;
-      border-bottom: 2px solid var(--border);
-      padding-bottom: 0.5rem;
-      margin-bottom: 0.5rem;
+    h2 { color: #e5c07b; margin-top: 0; }
+    input, select {
+      background: #2b1d2c;
+      border: 1px solid #444;
+      color: #fff;
+      padding: 0.5rem;
+      border-radius: 6px;
     }
-    ul { list-style: none; padding: 0; margin: 0; }
-    li { margin: 0.25rem 0; }
-    button {
-      background: var(--secondary);
-      color: white;
+    button.action {
+      background: #e5c07b;
+      color: #1f0d1d;
+      font-weight: bold;
       border: none;
-      border-radius: 4px;
-      padding: 0.3rem 0.6rem;
+      padding: 0.5rem 1rem;
+      margin-left: 0.3rem;
+      border-radius: 6px;
       cursor: pointer;
-      margin: 2px;
     }
-    button.danger { background: var(--primary); }
-    button.small { font-size: 0.8rem; padding: 0.2rem 0.4rem; }
-    select, input {
-      margin: 0.2rem 0;
-      padding: 0.3rem;
-      width: 100%;
-    }
-    .alliance-member {
-      display: inline-block;
-      background: #e3f2fd;
-      padding: 2px 6px;
-      border-radius: 4px;
-      margin: 2px;
+    ul { list-style: none; padding: 0; }
+    li {
+      padding: 0.3rem 0;
+      border-bottom: 1px solid #333;
     }
     .vote-bar {
-      display: flex;
-      height: 24px;
-      background: #eee;
-      border-radius: 12px;
+      height: 30px;
+      background: #3e223a;
+      margin: 0.3rem 0;
+      border-radius: 6px;
       overflow: hidden;
-      margin-top: 0.5rem;
+      display: flex;
     }
-    .vote-segment {
+    .vote-fill {
+      height: 100%;
       text-align: center;
-      font-size: 0.8rem;
-      color: white;
-      line-height: 24px;
+      font-weight: bold;
+      color: #1f0d1d;
+      line-height: 30px;
+      transition: width 0.5s ease;
+    }
+    .fill1 { background: #e06c75; }
+    .fill2 { background: #61afef; }
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
     }
   </style>
 </head>
 <body>
-<header>📺 Big Brother Tracker</header>
+  <header>🏨 Big Brother: Hotel Mystère Tracker</header>
+  <nav>
+    <button data-tab="house">Houseguests</button>
+    <button data-tab="alliances">Alliances</button>
+    <button data-tab="week">Week Events</button>
+    <button data-tab="eviction">Eviction</button>
+    <button data-tab="jury">Jury</button>
+    <button data-tab="twists">Twists</button>
+  </nav>
+  <main>
+    <!-- Houseguests -->
+    <section id="house" class="active">
+      <h2>Houseguests</h2>
+      <input id="playerName" placeholder="Add player..." />
+      <button class="action" id="addPlayerBtn">Add</button>
+      <ul id="players"></ul>
+    </section>
 
-<nav>
-  <button onclick="showTab('house')" class="active">Houseguests</button>
-  <button onclick="showTab('alliances')">Alliances</button>
-  <button onclick="showTab('week')">Week Events</button>
-  <button onclick="showTab('eviction')">Eviction</button>
-  <button onclick="showTab('jury')">Jury</button>
-  <button onclick="showTab('twists')">Twists</button>
-</nav>
+    <!-- Alliances -->
+    <section id="alliances">
+      <h2>Alliances</h2>
+      <input id="allianceName" placeholder="Alliance name..." />
+      <button class="action" id="addAllianceBtn">Create</button>
+      <div id="alliancesList"></div>
+    </section>
 
-<main>
-  <!-- Houseguests -->
-  <section id="house" class="tab active">
-    <h2>Houseguests</h2>
-    <input id="playerName" placeholder="Add player..." onkeypress="if(event.key==='Enter') addPlayer()" />
-    <button onclick="addPlayer()">Add</button>
-    <ul id="players"></ul>
-  </section>
+    <!-- Week Events -->
+    <section id="week">
+      <h2>Week Events</h2>
+      <div id="weekFlow">
+        <h3>HOH</h3>
+        <select id="hohSelect"></select>
+        <button class="action" id="setHOHBtn">Confirm</button>
+        <p id="hohDisplay">None</p>
 
-  <!-- Alliances -->
-  <section id="alliances" class="tab">
-    <h2>Alliances</h2>
-    <input id="allianceName" placeholder="New alliance..." onkeypress="if(event.key==='Enter') addAlliance()" />
-    <button onclick="addAlliance()">Create Alliance</button>
-    <div id="alliancesDiv"></div>
-  </section>
+        <h3>Nominations</h3>
+        <select id="nom1"></select>
+        <select id="nom2"></select>
+        <button class="action" id="setNomsBtn">Confirm</button>
+        <p id="nomsDisplay">None</p>
 
-  <!-- Week Events -->
-  <section id="week" class="tab">
-    <h2>Week Events</h2>
-    <div>
-      <h3>Head of Household</h3>
-      <select id="hohSelect"></select>
-      <button onclick="setHOH()">Confirm</button>
-      <p id="hohDisplay">HOH: None</p>
-    </div>
-    <div>
-      <h3>Nominations</h3>
-      <select id="nom1"></select>
-      <select id="nom2"></select>
-      <button onclick="setNoms()">Confirm</button>
-      <p id="nomDisplay">Noms: None</p>
-    </div>
-    <div>
-      <h3>Veto</h3>
-      <select id="vetoSelect"></select>
-      <button onclick="setVeto()">Confirm</button>
-      <p id="vetoDisplay">Veto: None</p>
-    </div>
-    <div>
-      <h3>Veto Used</h3>
-      <select id="vetoUsedSelect"></select>
-      <button onclick="setVetoUsed()">Confirm</button>
-      <p id="vetoUsedDisplay">Veto Used: None</p>
-    </div>
-    <button onclick="saveWeek()">Save Week as PDF</button>
-  </section>
+        <h3>Veto</h3>
+        <select id="vetoSelect"></select>
+        <button class="action" id="setVetoBtn">Confirm</button>
+        <p id="vetoDisplay">None</p>
 
-  <!-- Eviction -->
-  <section id="eviction" class="tab">
-    <h2>Eviction Night</h2>
-    <div>
-      <select id="evNom1"></select>
-      <select id="evNom2"></select>
-      <button onclick="startEviction()">Start Live Vote</button>
-      <button class="danger" onclick="completeEviction()">Complete Eviction</button>
-    </div>
-    <h3>Votes</h3>
-    <ul id="voteList"></ul>
-    <h3>Live Visualization</h3>
-    <div class="vote-bar" id="voteBar"></div>
-    <h3>Prediction</h3>
-    <p id="prediction"></p>
-  </section>
+        <h3>Veto Used</h3>
+        <select id="vetoUsedSelect"></select>
+        <button class="action" id="setVetoUsedBtn">Confirm</button>
+        <p id="vetoUsedDisplay">None</p>
+      </div>
+      <button class="action" id="saveWeekBtn">Save Week as PDF</button>
+    </section>
 
-  <!-- Jury -->
-  <section id="jury" class="tab">
-    <h2>Jury</h2>
-    <label><input type="checkbox" id="juryPhase" onchange="toggleJuryPhase()" /> Jury Phase Has Begun</label>
-    <h3>Evicted</h3>
-    <ul id="evicted"></ul>
-    <h3>Jury</h3>
-    <ul id="jury"></ul>
-  </section>
+    <!-- Eviction -->
+    <section id="eviction">
+      <h2>Eviction Night</h2>
+      <div>
+        <button class="action" id="startEvictionBtn">Start Live Vote</button>
+        <ul id="voteList"></ul>
+        <div class="vote-bar">
+          <div id="fill1" class="vote-fill fill1" style="width:0%">0</div>
+          <div id="fill2" class="vote-fill fill2" style="width:0%">0</div>
+        </div>
+        <button class="action" id="completeEvictionBtn">Complete Eviction</button>
+        <p id="prediction"></p>
+      </div>
+    </section>
 
-  <!-- Twists -->
-  <section id="twists" class="tab">
-    <h2>Twists</h2>
-    <p>Track extra nominees, special vetos, or competition-based eliminations.</p>
-    <button onclick="addTwistNominee()">Add Extra Nominee</button>
-    <ul id="twistsList"></ul>
-  </section>
-</main>
+    <!-- Jury -->
+    <section id="jury">
+      <h2>Jury</h2>
+      <label><input type="checkbox" id="juryPhase" /> Jury Phase Has Begun</label>
+      <h3>Evicted</h3>
+      <ul id="evicted"></ul>
+      <h3>Jury</h3>
+      <ul id="juryList"></ul>
+    </section>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script>
-let players = [];
-let alliances = {};
-let hoh = null, veto = null, vetoUsed = null;
-let noms = [];
-let jury = [];
-let evicted = [];
-let evictionNominees = [];
-let twists = [];
-let voteHistory = [];
-let juryPhase = false;
+    <!-- Twists -->
+    <section id="twists">
+      <h2>Twists</h2>
+      <p>Track extra nominees, extra vetoes, or competition-based eliminations here (future expansion).</p>
+    </section>
+  </main>
 
-// --- Persistence ---
-function saveState(){
-  const state={players,alliances,hoh,veto,vetoUsed,noms,jury,evicted,evictionNominees,twists,voteHistory,juryPhase};
-  localStorage.setItem('bbState',JSON.stringify(state));
-}
-function loadState(){
-  const saved=localStorage.getItem('bbState');
-  if(saved){
-    const s=JSON.parse(saved);
-    players=s.players||[];
-    alliances=s.alliances||{};
-    hoh=s.hoh||null;
-    veto=s.veto||null;
-    vetoUsed=s.vetoUsed||null;
-    noms=s.noms||[];
-    jury=s.jury||[];
-    evicted=s.evicted||[];
-    evictionNominees=s.evictionNominees||[];
-    twists=s.twists||[];
-    voteHistory=s.voteHistory||[];
-    juryPhase=s.juryPhase||false;
-  }
-}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script>
+    // --- State ---
+    let players = JSON.parse(localStorage.getItem("players")) || [];
+    let alliances = JSON.parse(localStorage.getItem("alliances")) || {};
+    let jury = JSON.parse(localStorage.getItem("jury")) || [];
+    let evicted = JSON.parse(localStorage.getItem("evicted")) || [];
+    let juryPhase = JSON.parse(localStorage.getItem("juryPhase")) || false;
+    let hoh = "", noms = [], veto = "", vetoUsed = "";
+    let evictionNominees = [];
+    let votes = {};
 
-// --- Tabs ---
-function showTab(id){
-  document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
-  document.querySelectorAll("section.tab").forEach(s=>s.classList.remove("active"));
-  document.querySelector(`nav button[onclick="showTab('${id}')"]`).classList.add("active");
-  document.getElementById(id).classList.add("active");
-}
-
-// --- Players ---
-function renderPlayers(){
-  const ul=document.getElementById('players');
-  const hohSel=document.getElementById('hohSelect');
-  const vetoSel=document.getElementById('vetoSelect');
-  const vetoUsedSel=document.getElementById('vetoUsedSelect');
-  const n1=document.getElementById('nom1');
-  const n2=document.getElementById('nom2');
-  const ev1=document.getElementById('evNom1');
-  const ev2=document.getElementById('evNom2');
-  [ul,hohSel,vetoSel,vetoUsedSel,n1,n2,ev1,ev2].forEach(el=>el.innerHTML='');
-  players.forEach(p=>{
-    const li=document.createElement('li');
-    li.textContent=p;
-    ul.appendChild(li);
-    [hohSel,vetoSel,vetoUsedSel,n1,n2,ev1,ev2].forEach(sel=>{
-      const opt=document.createElement('option');
-      opt.value=p; opt.textContent=p;
-      sel.appendChild(opt);
-    });
-  });
-  document.getElementById('hohDisplay').textContent='HOH: '+(hoh||'None');
-  document.getElementById('vetoDisplay').textContent='Veto: '+(veto||'None');
-  document.getElementById('vetoUsedDisplay').textContent='Veto Used: '+(vetoUsed||'None');
-  document.getElementById('nomDisplay').textContent='Noms: '+(noms.length?noms.join(", "):'None');
-}
-function addPlayer(){
-  const n=document.getElementById('playerName').value.trim();
-  if(n&&!players.includes(n)){
-    players.push(n); renderPlayers(); saveState();
-  }
-  document.getElementById('playerName').value='';
-}
-
-// --- Alliances ---
-function addAlliance(){
-  const n=document.getElementById('allianceName').value.trim();
-  if(n&&!alliances[n]){
-    alliances[n]=[]; renderAlliances(); saveState();
-  }
-  document.getElementById('allianceName').value='';
-}
-function renderAlliances(){
-  const div=document.getElementById('alliancesDiv'); div.innerHTML='';
-  for(const [name,members] of Object.entries(alliances)){
-    const c=document.createElement('div'); c.innerHTML=`<strong>${name}</strong>`;
-    members.forEach(m=>{
-      const span=document.createElement('span'); span.className='alliance-member'; span.textContent=m;
-      const r=document.createElement('button'); r.textContent='x'; r.className='small danger';
-      r.onclick=()=>{alliances[name]=alliances[name].filter(x=>x!==m); renderAlliances(); saveState();};
-      c.appendChild(span); c.appendChild(r);
-    });
-    const sel=document.createElement('select');
-    players.forEach(p=>{const o=document.createElement('option');o.value=p;o.textContent=p;sel.appendChild(o);});
-    const b=document.createElement('button'); b.textContent='Add Member';
-    b.onclick=()=>{if(!alliances[name].includes(sel.value)){alliances[name].push(sel.value);} renderAlliances(); saveState();};
-    const d=document.createElement('button'); d.textContent='Delete Alliance'; d.className='danger small';
-    d.onclick=()=>{delete alliances[name]; renderAlliances(); saveState();};
-    c.appendChild(sel); c.appendChild(b); c.appendChild(d); div.appendChild(c);
-  }
-}
-
-// --- Week Events ---
-function setHOH(){hoh=document.getElementById('hohSelect').value; renderPlayers(); saveState();}
-function setNoms(){noms=[document.getElementById('nom1').value,document.getElementById('nom2').value]; renderPlayers(); saveState();}
-function setVeto(){veto=document.getElementById('vetoSelect').value; renderPlayers(); saveState();}
-function setVetoUsed(){vetoUsed=document.getElementById('vetoUsedSelect').value; renderPlayers(); saveState();}
-
-// --- Eviction ---
-function startEviction(){
-  evictionNominees=[document.getElementById('evNom1').value,document.getElementById('evNom2').value,...twists];
-  const ul=document.getElementById('voteList'); ul.innerHTML='';
-  players.forEach(p=>{
-    if(!evictionNominees.includes(p) && !jury.includes(p) && !evicted.includes(p)){
-      const li=document.createElement('li'); li.textContent=`${p} votes: `;
-      const sel=document.createElement('select');
-      evictionNominees.forEach(n=>{const o=document.createElement('option');o.value=n;o.textContent=n;sel.appendChild(o);});
-      sel.onchange=()=>predictVotes();
-      li.appendChild(sel); ul.appendChild(li);
+    // --- Helpers ---
+    function saveState() {
+      localStorage.setItem("players", JSON.stringify(players));
+      localStorage.setItem("alliances", JSON.stringify(alliances));
+      localStorage.setItem("jury", JSON.stringify(jury));
+      localStorage.setItem("evicted", JSON.stringify(evicted));
+      localStorage.setItem("juryPhase", JSON.stringify(juryPhase));
     }
-  });
-  predictVotes();
-}
-function completeEviction(){
-  const selections=[...document.querySelectorAll('#voteList select')].map(s=>s.value);
-  const counts={}; selections.forEach(v=>counts[v]=(counts[v]||0)+1);
-  let evictedPlayer=Object.keys(counts).reduce((a,b)=>counts[a]>counts[b]?a:b);
-  if(juryPhase) jury.push(evictedPlayer); else evicted.push(evictedPlayer);
-  voteHistory.push(...[...document.querySelectorAll('#voteList select')].map(sel=>({week:voteHistory.length+1,voter:sel.parentElement.textContent.split(' ')[0],target:sel.value})));
-  evictionNominees=[]; twists=[];
-  renderPlayers(); renderJury(); renderTwists();
-  document.getElementById('voteList').innerHTML=''; document.getElementById('prediction').textContent='';
-  document.getElementById('voteBar').innerHTML=''; saveState();
-}
-function predictVotes(){
-  let tally={};
-  [...document.querySelectorAll('#voteList select')].forEach(sel=>{tally[sel.value]=(tally[sel.value]||0)+1;});
-  const bar=document.getElementById('voteBar'); bar.innerHTML='';
-  const total=Object.values(tally).reduce((a,b)=>a+b,0)||1;
-  Object.entries(tally).forEach(([nom,v])=>{
-    const seg=document.createElement('div'); seg.className='vote-segment';
-    seg.style.width=(100*v/total)+'%'; seg.style.background=(nom===evictionNominees[0]?'#d32f2f':'#1976d2');
-    seg.textContent=`${nom} (${v})`; bar.appendChild(seg);
-  });
-  let winner=Object.keys(tally).reduce((a,b)=>tally[a]>tally[b]?a:b,null);
-  document.getElementById('prediction').textContent=winner?`Predicted eviction: ${winner}`:'';
-}
 
-// --- Jury ---
-function toggleJuryPhase(){juryPhase=document.getElementById('juryPhase').checked; saveState();}
-function renderJury(){
-  const j=document.getElementById('jury'); j.innerHTML='';
-  jury.forEach(p=>{const li=document.createElement('li'); li.textContent=p; j.appendChild(li);});
-  const e=document.getElementById('evicted'); e.innerHTML='';
-  evicted.forEach(p=>{const li=document.createElement('li'); li.textContent=p; e.appendChild(li);});
-  document.getElementById('juryPhase').checked=juryPhase;
-}
+    function renderPlayers() {
+      const ul = document.getElementById("players");
+      ul.innerHTML = "";
+      players.forEach(p => {
+        const li = document.createElement("li");
+        li.textContent = p;
+        ul.appendChild(li);
+      });
+      ["hohSelect","nom1","nom2","vetoSelect","vetoUsedSelect"].forEach(id=>{
+        const sel=document.getElementById(id);
+        if (!sel) return;
+        sel.innerHTML="";
+        players.forEach(p=>{
+          const opt=document.createElement("option");
+          opt.value=p; opt.textContent=p;
+          sel.appendChild(opt);
+        });
+      });
+    }
 
-// --- Twists ---
-function addTwistNominee(){const n=prompt("Enter extra nominee name:"); if(n&&players.includes(n)&&!twists.includes(n)){twists.push(n); renderTwists(); saveState();}}
-function renderTwists(){const ul=document.getElementById('twistsList'); ul.innerHTML=''; twists.forEach(t=>{const li=document.createElement('li'); li.textContent='Extra nominee: '+t; ul.appendChild(li);});}
+    function renderAlliances() {
+      const div=document.getElementById("alliancesList");
+      div.innerHTML="";
+      for (const [name,members] of Object.entries(alliances)) {
+        const container=document.createElement("div");
+        container.innerHTML=`<strong>${name}</strong>: ${members.join(", ")}`;
+        div.appendChild(container);
+      }
+    }
 
-// --- PDF ---
-async function saveWeek(){
-  const {jsPDF}=window.jspdf; const doc=new jsPDF();
-  doc.text("Big Brother - Weekly Recap",10,10);
-  doc.text(`HOH: ${hoh||'None'}`,10,20);
-  doc.text(`Nominations: ${noms.join(', ')||'None'}`,10,30);
-  doc.text(`Veto: ${veto||'None'}`,10,40);
-  doc.text(`Veto Used: ${vetoUsed||'None'}`,10,50);
-  if(voteHistory.length){
-    const lastWeek=voteHistory.filter(v=>v.week===voteHistory.length);
-    if(lastWeek.length){
-      doc.text("Eviction Results:",10,60);
-      let y=70; const counts={};
-      lastWeek.forEach(v=>counts[v.target]=(counts[v
+    function renderJury() {
+      document.getElementById("juryPhase").checked=juryPhase;
+      const evUl=document.getElementById("evicted");
+      evUl.innerHTML="";
+      evicted.forEach(p=>{
+        const li=document.createElement("li");
+        li.textContent=p;
+        evUl.appendChild(li);
+      });
+      const jUl=document.getElementById("juryList");
+      jUl.innerHTML="";
+      jury.forEach(p=>{
+        const li=document.createElement("li");
+        li.textContent=p;
+        jUl.appendChild(li);
+      });
+    }
+
+    function updateVoteBar() {
+      const counts={};
+      Object.values(votes).forEach(v=>{
+        counts[v]=(counts[v]||0)+1;
+      });
+      const n1=evictionNominees[0], n2=evictionNominees[1];
+      const total=Object.keys(votes).length;
+      let c1=counts[n1]||0, c2=counts[n2]||0;
+      document.getElementById("fill1").style.width=(total?c1/total*100:0)+"%";
+      document.getElementById("fill2").style.width=(total?c2/total*100:0)+"%";
+      document.getElementById("fill1").textContent=c1;
+      document.getElementById("fill2").textContent=c2;
+    }
+
+    // --- Actions ---
+    document.getElementById("addPlayerBtn").addEventListener("click",()=>{
+      const name=document.getElementById("playerName").value.trim();
+      if(name && !players.includes(name)){ players.push(name); saveState(); renderPlayers();}
+      document.getElementById("playerName").value="";
+    });
+    document.getElementById("playerName").addEventListener("keypress",e=>{
+      if(e.key==="Enter") document.getElementById("addPlayerBtn").click();
+    });
+
+    document.getElementById("addAllianceBtn").addEventListener("click",()=>{
+      const name=document.getElementById("allianceName").value.trim();
+      if(name && !alliances[name]){ alliances[name]=[]; saveState(); renderAlliances();}
+      document.getElementById("allianceName").value="";
+    });
+
+    document.getElementById("setHOHBtn").addEventListener("click",()=>{
+      hoh=document.getElementById("hohSelect").value;
+      document.getElementById("hohDisplay").textContent=hoh;
+    });
+    document.getElementById("setNomsBtn").addEventListener("click",()=>{
+      noms=[document.getElementById("nom1").value, document.getElementById("nom2").value];
+      document.getElementById("nomsDisplay").textContent=noms.join(" vs ");
+    });
+    document.getElementById("setVetoBtn").addEventListener("click",()=>{
+      veto=document.getElementById("vetoSelect").value;
+      document.getElementById("vetoDisplay").textContent=veto;
+    });
+    document.getElementById("setVetoUsedBtn").addEventListener("click",()=>{
+      vetoUsed=document.getElementById("vetoUsedSelect").value;
+      document.getElementById("vetoUsedDisplay").textContent=vetoUsed;
+    });
+
+    document.getElementById("startEvictionBtn").addEventListener("click",()=>{
+      evictionNominees=[document.getElementById("nom1").value, document.getElementById("nom2").value];
+      const ul=document.getElementById("voteList");
+      ul.innerHTML="";
+      votes={};
+      players.forEach(p=>{
+        if(!evictionNominees.includes(p)){
+          const li=document.createElement("li");
+          li.textContent=`${p} votes: `;
+          const sel=document.createElement("select");
+          evictionNominees.forEach(n=>{
+            const opt=document.createElement("option");
+            opt.value=n; opt.textContent=n;
+            sel.appendChild(opt);
+          });
+          sel.addEventListener("change",()=>{ votes[p]=sel.value; updateVoteBar(); });
+          li.appendChild(sel);
+          ul.appendChild(li);
+        }
+      });
+      updateVoteBar();
+    });
+
+    document.getElementById("completeEvictionBtn").addEventListener("click",()=>{
+      const counts={};
+      Object.values(votes).forEach(v=>counts[v]=(counts[v]||0)+1);
+      let evictedHG=Object.keys(counts).reduce((a,b)=>counts[a]>counts[b]?a:b);
+      if(juryPhase){ jury.push(evictedHG);} else { evicted.push(evictedHG);}
+      saveState(); renderJury(); renderPlayers();
+    });
+
+    document.getElementById("juryPhase").addEventListener("change",()=>{
+      juryPhase=document.getElementById("juryPhase").checked;
+      saveState(); renderJury();
+    });
+
+    document.getElementById("saveWeekBtn").addEventListener("click",()=>{
+      const { jsPDF }=window.jspdf;
+      const doc=new jsPDF();
+      doc.text("Big Brother: Hotel Mystère - Week Recap",10,10);
+      doc.text(`HOH: ${hoh||"None"}`,10,20);
+      doc.text(`Noms: ${noms.join(" vs ")||"None"}`,10,30);
+      doc.text(`Veto: ${veto||"None"}`,10,40);
+      doc.text(`Veto Used: ${vetoUsed||"None"}`,10,50);
+      doc.text("Eviction:",10,60);
+      let y=70;
+      for(const [p,v] of Object.entries(votes)){ doc.text(`- ${p} → ${v}`,15,y); y+=10; }
+      doc.save("week_recap.pdf");
+    });
+
+    // --- Tabs ---
+    document.querySelectorAll("nav button").forEach(btn=>{
+      btn.addEventListener("click",()=>{
+        document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
+        document.querySelectorAll("main section").forEach(s=>s.classList.remove("active"));
+        btn.classList.add("active");
+        document.getElementById(btn.dataset.tab).classList.add("active");
+      });
+    });
+
+    // --- Init ---
+    renderPlayers(); renderAlliances(); renderJury();
+  </script>
+</body>
+</html>
