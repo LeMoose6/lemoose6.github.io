@@ -1,378 +1,283 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Big Brother: Hotel Mystère Tracker</title>
-  <style>
-    body {
-      font-family: 'Trebuchet MS', sans-serif;
-      background: linear-gradient(to bottom right, #0e0b16, #2c1a27);
-      color: #f8f8f8;
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-    header {
-      background: #1f0d1d;
-      color: #e5c07b;
-      text-align: center;
-      padding: 1rem;
-      font-size: 1.8rem;
-      font-weight: bold;
-      letter-spacing: 2px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.6);
-    }
-    nav {
-      background: #241423;
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      padding: 0.5rem;
-    }
-    nav button {
-      background: #3e223a;
-      color: #f8f8f8;
-      border: none;
-      padding: 0.6rem 1rem;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: all 0.2s ease;
-    }
-    nav button:hover, nav button.active {
-      background: #e5c07b;
-      color: #1f0d1d;
-    }
-    main {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      padding: 1rem;
-    }
-    section {
-      display: none;
-      width: 90%;
-      max-width: 1000px;
-      background: #1a1120;
-      border-radius: 12px;
-      padding: 1.5rem;
-      box-shadow: 0 2px 15px rgba(0,0,0,0.6);
-      animation: fadeIn 0.4s ease;
-    }
-    section.active { display: block; }
-    h2 { color: #e5c07b; margin-top: 0; }
-    input, select {
-      background: #2b1d2c;
-      border: 1px solid #444;
-      color: #fff;
-      padding: 0.5rem;
-      border-radius: 6px;
-    }
-    button.action {
-      background: #e5c07b;
-      color: #1f0d1d;
-      font-weight: bold;
-      border: none;
-      padding: 0.5rem 1rem;
-      margin-left: 0.3rem;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    ul { list-style: none; padding: 0; }
-    li {
-      padding: 0.3rem 0;
-      border-bottom: 1px solid #333;
-    }
-    .vote-bar {
-      height: 30px;
-      background: #3e223a;
-      margin: 0.3rem 0;
-      border-radius: 6px;
-      overflow: hidden;
-      display: flex;
-    }
-    .vote-fill {
-      height: 100%;
-      text-align: center;
-      font-weight: bold;
-      color: #1f0d1d;
-      line-height: 30px;
-      transition: width 0.5s ease;
-    }
-    .fill1 { background: #e06c75; }
-    .fill2 { background: #61afef; }
-    @keyframes fadeIn {
-      from {opacity: 0;}
-      to {opacity: 1;}
-    }
-  </style>
+<meta charset="UTF-8">
+<title>Big Brother: Hotel Mystère Tracker</title>
+<style>
+  /* Luxury Hotel Mystère Theme */
+  body {
+    font-family: 'Georgia', serif;
+    background: linear-gradient(to bottom right, #1b0b2d, #3d1a50);
+    color: #f8f8f8;
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  header {
+    background: #2e1136;
+    color: #ffd700;
+    text-align: center;
+    padding: 1rem;
+    font-size: 2rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.7);
+  }
+  nav {
+    display: flex;
+    justify-content: center;
+    background: #3d1a50;
+    gap: 1rem;
+    padding: 0.5rem;
+    flex-wrap: wrap;
+  }
+  nav button {
+    background: #5a2e7f;
+    color: #ffd700;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+  }
+  nav button.active, nav button:hover {
+    background: #ffd700;
+    color: #2e1136;
+  }
+  main {
+    flex: 1;
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+  }
+  section {
+    display: none;
+    width: 90%;
+    max-width: 1000px;
+    background: #2e1136;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.8);
+    animation: fadeIn 0.4s ease;
+  }
+  section.active { display: block; }
+  h2 {
+    color: #ffd700;
+    margin-top: 0;
+  }
+  input, select {
+    background: #4b2b6a;
+    border: 1px solid #7a49a3;
+    color: #ffd700;
+    padding: 0.5rem;
+    border-radius: 6px;
+    margin-bottom: 0.5rem;
+  }
+  button.action {
+    background: #ffd700;
+    color: #2e1136;
+    font-weight: bold;
+    border: none;
+    padding: 0.5rem 1rem;
+    margin-left: 0.3rem;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  ul { list-style: none; padding: 0; margin: 0; }
+  li {
+    padding: 0.3rem 0;
+    border-bottom: 1px solid #7a49a3;
+  }
+  .alliance-card {
+    background: #3d1a50;
+    border: 1px solid #7a49a3;
+    border-radius: 8px;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .alliance-member {
+    display: inline-block;
+    background: #7a49a3;
+    color: #ffd700;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin: 2px;
+    font-size: 0.9rem;
+  }
+  .vote-bar {
+    height: 30px;
+    background: #3d1a50;
+    margin: 0.5rem 0;
+    border-radius: 6px;
+    overflow: hidden;
+    display: flex;
+  }
+  .vote-fill {
+    height: 100%;
+    text-align: center;
+    font-weight: bold;
+    color: #2e1136;
+    line-height: 30px;
+    transition: width 0.5s ease;
+  }
+  .fill1 { background: #e06c75; }
+  .fill2 { background: #61afef; }
+  @keyframes fadeIn { from {opacity:0;} to{opacity:1;} }
+</style>
 </head>
 <body>
-  <header>🏨 Big Brother: Hotel Mystère Tracker</header>
-  <nav>
-    <button data-tab="house">Houseguests</button>
-    <button data-tab="alliances">Alliances</button>
-    <button data-tab="week">Week Events</button>
-    <button data-tab="eviction">Eviction</button>
-    <button data-tab="jury">Jury</button>
-    <button data-tab="twists">Twists</button>
-  </nav>
-  <main>
-    <!-- Houseguests -->
-    <section id="house" class="active">
-      <h2>Houseguests</h2>
-      <input id="playerName" placeholder="Add player..." />
-      <button class="action" id="addPlayerBtn">Add</button>
-      <ul id="players"></ul>
-    </section>
+<header>🏨 Big Brother: Hotel Mystère Tracker</header>
+<nav>
+  <button data-tab="house" class="active">Houseguests</button>
+  <button data-tab="alliances">Alliances</button>
+  <button data-tab="week">Week Events</button>
+  <button data-tab="eviction">Eviction</button>
+  <button data-tab="jury">Jury</button>
+  <button data-tab="twists">Twists</button>
+</nav>
+<main>
+  <!-- Houseguests -->
+  <section id="house" class="active">
+    <h2>Houseguests</h2>
+    <input id="playerName" placeholder="Add player..." />
+    <button class="action" id="addPlayerBtn">Add</button>
+    <ul id="players"></ul>
+  </section>
 
-    <!-- Alliances -->
-    <section id="alliances">
-      <h2>Alliances</h2>
-      <input id="allianceName" placeholder="Alliance name..." />
-      <button class="action" id="addAllianceBtn">Create</button>
-      <div id="alliancesList"></div>
-    </section>
+  <!-- Alliances -->
+  <section id="alliances">
+    <h2>Alliances</h2>
+    <input id="allianceName" placeholder="Alliance name..." />
+    <button class="action" id="addAllianceBtn">Create</button>
+    <div id="alliancesList"></div>
+  </section>
 
-    <!-- Week Events -->
-    <section id="week">
-      <h2>Week Events</h2>
-      <div id="weekFlow">
-        <h3>HOH</h3>
-        <select id="hohSelect"></select>
-        <button class="action" id="setHOHBtn">Confirm</button>
-        <p id="hohDisplay">None</p>
+  <!-- Week Events -->
+  <section id="week">
+    <h2>Week Events</h2>
+    <div>
+      <h3>HOH</h3>
+      <select id="hohSelect"></select>
+      <button class="action" id="setHOHBtn">Confirm</button>
+      <p id="hohDisplay">None</p>
 
-        <h3>Nominations</h3>
-        <select id="nom1"></select>
-        <select id="nom2"></select>
-        <button class="action" id="setNomsBtn">Confirm</button>
-        <p id="nomsDisplay">None</p>
+      <h3>Nominations</h3>
+      <select id="nom1"></select>
+      <select id="nom2"></select>
+      <button class="action" id="setNomsBtn">Confirm</button>
+      <p id="nomsDisplay">None</p>
 
-        <h3>Veto</h3>
-        <select id="vetoSelect"></select>
-        <button class="action" id="setVetoBtn">Confirm</button>
-        <p id="vetoDisplay">None</p>
+      <h3>Veto</h3>
+      <select id="vetoSelect"></select>
+      <button class="action" id="setVetoBtn">Confirm</button>
+      <p id="vetoDisplay">None</p>
 
-        <h3>Veto Used</h3>
-        <select id="vetoUsedSelect"></select>
-        <button class="action" id="setVetoUsedBtn">Confirm</button>
-        <p id="vetoUsedDisplay">None</p>
+      <h3>Veto Used</h3>
+      <select id="vetoUsedSelect"></select>
+      <button class="action" id="setVetoUsedBtn">Confirm</button>
+      <p id="vetoUsedDisplay">None</p>
+    </div>
+    <button class="action" id="saveWeekBtn">Save Week as PDF</button>
+  </section>
+
+  <!-- Eviction -->
+  <section id="eviction">
+    <h2>Eviction Night</h2>
+    <div>
+      <button class="action" id="startEvictionBtn">Start Live Vote</button>
+      <ul id="voteList"></ul>
+      <div class="vote-bar">
+        <div id="fill1" class="vote-fill fill1" style="width:0%">0</div>
+        <div id="fill2" class="vote-fill fill2" style="width:0%">0</div>
       </div>
-      <button class="action" id="saveWeekBtn">Save Week as PDF</button>
-    </section>
+      <button class="action" id="completeEvictionBtn">Complete Eviction</button>
+      <p id="prediction"></p>
+    </div>
+  </section>
 
-    <!-- Eviction -->
-    <section id="eviction">
-      <h2>Eviction Night</h2>
-      <div>
-        <button class="action" id="startEvictionBtn">Start Live Vote</button>
-        <ul id="voteList"></ul>
-        <div class="vote-bar">
-          <div id="fill1" class="vote-fill fill1" style="width:0%">0</div>
-          <div id="fill2" class="vote-fill fill2" style="width:0%">0</div>
-        </div>
-        <button class="action" id="completeEvictionBtn">Complete Eviction</button>
-        <p id="prediction"></p>
-      </div>
-    </section>
+  <!-- Jury -->
+  <section id="jury">
+    <h2>Jury</h2>
+    <label><input type="checkbox" id="juryPhase" /> Jury Phase Has Begun</label>
+    <h3>Evicted</h3>
+    <ul id="evicted"></ul>
+    <h3>Jury</h3>
+    <ul id="juryList"></ul>
+  </section>
 
-    <!-- Jury -->
-    <section id="jury">
-      <h2>Jury</h2>
-      <label><input type="checkbox" id="juryPhase" /> Jury Phase Has Begun</label>
-      <h3>Evicted</h3>
-      <ul id="evicted"></ul>
-      <h3>Jury</h3>
-      <ul id="juryList"></ul>
-    </section>
+  <!-- Twists -->
+  <section id="twists">
+    <h2>Twists</h2>
+    <p>Track extra nominees, extra vetoes, or competition-based eliminations here.</p>
+  </section>
+</main>
 
-    <!-- Twists -->
-    <section id="twists">
-      <h2>Twists</h2>
-      <p>Track extra nominees, extra vetoes, or competition-based eliminations here (future expansion).</p>
-    </section>
-  </main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+let players = JSON.parse(localStorage.getItem("players"))||[];
+let alliances = JSON.parse(localStorage.getItem("alliances"))||{};
+let jury = JSON.parse(localStorage.getItem("jury"))||[];
+let evicted = JSON.parse(localStorage.getItem("evicted"))||[];
+let juryPhase = JSON.parse(localStorage.getItem("juryPhase"))||false;
+let hoh="", noms=[], veto="", vetoUsed="", evictionNominees=[], votes={};
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script>
-    // --- State ---
-    let players = JSON.parse(localStorage.getItem("players")) || [];
-    let alliances = JSON.parse(localStorage.getItem("alliances")) || {};
-    let jury = JSON.parse(localStorage.getItem("jury")) || [];
-    let evicted = JSON.parse(localStorage.getItem("evicted")) || [];
-    let juryPhase = JSON.parse(localStorage.getItem("juryPhase")) || false;
-    let hoh = "", noms = [], veto = "", vetoUsed = "";
-    let evictionNominees = [];
-    let votes = {};
-
-    // --- Helpers ---
-    function saveState() {
-      localStorage.setItem("players", JSON.stringify(players));
-      localStorage.setItem("alliances", JSON.stringify(alliances));
-      localStorage.setItem("jury", JSON.stringify(jury));
-      localStorage.setItem("evicted", JSON.stringify(evicted));
-      localStorage.setItem("juryPhase", JSON.stringify(juryPhase));
-    }
-
-    function renderPlayers() {
-      const ul = document.getElementById("players");
-      ul.innerHTML = "";
-      players.forEach(p => {
-        const li = document.createElement("li");
-        li.textContent = p;
-        ul.appendChild(li);
-      });
-      ["hohSelect","nom1","nom2","vetoSelect","vetoUsedSelect"].forEach(id=>{
-        const sel=document.getElementById(id);
-        if (!sel) return;
-        sel.innerHTML="";
-        players.forEach(p=>{
-          const opt=document.createElement("option");
-          opt.value=p; opt.textContent=p;
-          sel.appendChild(opt);
-        });
-      });
-    }
-
-    function renderAlliances() {
-      const div=document.getElementById("alliancesList");
-      div.innerHTML="";
-      for (const [name,members] of Object.entries(alliances)) {
-        const container=document.createElement("div");
-        container.innerHTML=`<strong>${name}</strong>: ${members.join(", ")}`;
-        div.appendChild(container);
-      }
-    }
-
-    function renderJury() {
-      document.getElementById("juryPhase").checked=juryPhase;
-      const evUl=document.getElementById("evicted");
-      evUl.innerHTML="";
-      evicted.forEach(p=>{
-        const li=document.createElement("li");
-        li.textContent=p;
-        evUl.appendChild(li);
-      });
-      const jUl=document.getElementById("juryList");
-      jUl.innerHTML="";
-      jury.forEach(p=>{
-        const li=document.createElement("li");
-        li.textContent=p;
-        jUl.appendChild(li);
-      });
-    }
-
-    function updateVoteBar() {
-      const counts={};
-      Object.values(votes).forEach(v=>{
-        counts[v]=(counts[v]||0)+1;
-      });
-      const n1=evictionNominees[0], n2=evictionNominees[1];
-      const total=Object.keys(votes).length;
-      let c1=counts[n1]||0, c2=counts[n2]||0;
-      document.getElementById("fill1").style.width=(total?c1/total*100:0)+"%";
-      document.getElementById("fill2").style.width=(total?c2/total*100:0)+"%";
-      document.getElementById("fill1").textContent=c1;
-      document.getElementById("fill2").textContent=c2;
-    }
-
-    // --- Actions ---
-    document.getElementById("addPlayerBtn").addEventListener("click",()=>{
-      const name=document.getElementById("playerName").value.trim();
-      if(name && !players.includes(name)){ players.push(name); saveState(); renderPlayers();}
-      document.getElementById("playerName").value="";
+// --- Helpers ---
+function saveState(){
+  localStorage.setItem("players",JSON.stringify(players));
+  localStorage.setItem("alliances",JSON.stringify(alliances));
+  localStorage.setItem("jury",JSON.stringify(jury));
+  localStorage.setItem("evicted",JSON.stringify(evicted));
+  localStorage.setItem("juryPhase",JSON.stringify(juryPhase));
+}
+function renderPlayers(){
+  const ul=document.getElementById("players"); ul.innerHTML="";
+  players.forEach(p=>{ const li=document.createElement("li"); li.textContent=p; ul.appendChild(li); });
+  ["hohSelect","nom1","nom2","vetoSelect","vetoUsedSelect"].forEach(id=>{
+    const sel=document.getElementById(id);
+    if(!sel) return; sel.innerHTML="";
+    players.forEach(p=>{ const opt=document.createElement("option"); opt.value=p; opt.textContent=p; sel.appendChild(opt); });
+  });
+}
+function renderAlliances(){
+  const div=document.getElementById("alliancesList"); div.innerHTML="";
+  for(const [name,members] of Object.entries(alliances)){
+    const card=document.createElement("div"); card.className="alliance-card";
+    card.innerHTML=`<strong>${name}</strong>`;
+    members.forEach(m=>{
+      const span=document.createElement("span"); span.className="alliance-member"; span.textContent=m;
+      const rm=document.createElement("button"); rm.textContent="❌"; rm.style.marginLeft="3px";
+      rm.addEventListener("click",()=>{ alliances[name]=alliances[name].filter(x=>x!==m); saveState(); renderAlliances(); });
+      card.appendChild(span); card.appendChild(rm);
     });
-    document.getElementById("playerName").addEventListener("keypress",e=>{
-      if(e.key==="Enter") document.getElementById("addPlayerBtn").click();
-    });
+    const sel=document.createElement("select");
+    players.forEach(p=>{ const o=document.createElement("option"); o.value=p;o.textContent=p; sel.appendChild(o); });
+    const addBtn=document.createElement("button"); addBtn.textContent="Add Member";
+    addBtn.className="action"; addBtn.addEventListener("click",()=>{ if(!alliances[name].includes(sel.value)) alliances[name].push(sel.value); saveState(); renderAlliances(); });
+    const delBtn=document.createElement("button"); delBtn.textContent="Demolish"; delBtn.className="action";
+    delBtn.addEventListener("click",()=>{ delete alliances[name]; saveState(); renderAlliances(); });
+    card.appendChild(sel); card.appendChild(addBtn); card.appendChild(delBtn);
+    div.appendChild(card);
+  }
+}
+function renderJury(){
+  document.getElementById("juryPhase").checked=juryPhase;
+  const evUl=document.getElementById("evicted"); evUl.innerHTML="";
+  evicted.forEach(p=>{ const li=document.createElement("li"); li.textContent=p; evUl.appendChild(li); });
+  const jUl=document.getElementById("juryList"); jUl.innerHTML="";
+  jury.forEach(p=>{ const li=document.createElement("li"); li.textContent=p; jUl.appendChild(li); });
+}
+function updateVoteBar(){
+  const counts={}; Object.values(votes).forEach(v=>counts[v]=(counts[v]||0)+1);
+  const n1=evictionNominees[0], n2=evictionNominees[1]; const total=Object.keys(votes).length||1;
+  const c1=counts[n1]||0, c2=counts[n2]||0;
+  document.getElementById("fill1").style.width=(c1/total*100)+"%"; document.getElementById("fill2").style.width=(c2/total*100)+"%";
+  document.getElementById("fill1").textContent=c1; document.getElementById("fill2").textContent=c2;
+  let pred= c1>c2? n1 : c2>c1? n2 : "Tie";
+  document.getElementById("prediction").textContent="Predicted eviction: "+pred;
+}
 
-    document.getElementById("addAllianceBtn").addEventListener("click",()=>{
-      const name=document.getElementById("allianceName").value.trim();
-      if(name && !alliances[name]){ alliances[name]=[]; saveState(); renderAlliances();}
-      document.getElementById("allianceName").value="";
-    });
-
-    document.getElementById("setHOHBtn").addEventListener("click",()=>{
-      hoh=document.getElementById("hohSelect").value;
-      document.getElementById("hohDisplay").textContent=hoh;
-    });
-    document.getElementById("setNomsBtn").addEventListener("click",()=>{
-      noms=[document.getElementById("nom1").value, document.getElementById("nom2").value];
-      document.getElementById("nomsDisplay").textContent=noms.join(" vs ");
-    });
-    document.getElementById("setVetoBtn").addEventListener("click",()=>{
-      veto=document.getElementById("vetoSelect").value;
-      document.getElementById("vetoDisplay").textContent=veto;
-    });
-    document.getElementById("setVetoUsedBtn").addEventListener("click",()=>{
-      vetoUsed=document.getElementById("vetoUsedSelect").value;
-      document.getElementById("vetoUsedDisplay").textContent=vetoUsed;
-    });
-
-    document.getElementById("startEvictionBtn").addEventListener("click",()=>{
-      evictionNominees=[document.getElementById("nom1").value, document.getElementById("nom2").value];
-      const ul=document.getElementById("voteList");
-      ul.innerHTML="";
-      votes={};
-      players.forEach(p=>{
-        if(!evictionNominees.includes(p)){
-          const li=document.createElement("li");
-          li.textContent=`${p} votes: `;
-          const sel=document.createElement("select");
-          evictionNominees.forEach(n=>{
-            const opt=document.createElement("option");
-            opt.value=n; opt.textContent=n;
-            sel.appendChild(opt);
-          });
-          sel.addEventListener("change",()=>{ votes[p]=sel.value; updateVoteBar(); });
-          li.appendChild(sel);
-          ul.appendChild(li);
-        }
-      });
-      updateVoteBar();
-    });
-
-    document.getElementById("completeEvictionBtn").addEventListener("click",()=>{
-      const counts={};
-      Object.values(votes).forEach(v=>counts[v]=(counts[v]||0)+1);
-      let evictedHG=Object.keys(counts).reduce((a,b)=>counts[a]>counts[b]?a:b);
-      if(juryPhase){ jury.push(evictedHG);} else { evicted.push(evictedHG);}
-      saveState(); renderJury(); renderPlayers();
-    });
-
-    document.getElementById("juryPhase").addEventListener("change",()=>{
-      juryPhase=document.getElementById("juryPhase").checked;
-      saveState(); renderJury();
-    });
-
-    document.getElementById("saveWeekBtn").addEventListener("click",()=>{
-      const { jsPDF }=window.jspdf;
-      const doc=new jsPDF();
-      doc.text("Big Brother: Hotel Mystère - Week Recap",10,10);
-      doc.text(`HOH: ${hoh||"None"}`,10,20);
-      doc.text(`Noms: ${noms.join(" vs ")||"None"}`,10,30);
-      doc.text(`Veto: ${veto||"None"}`,10,40);
-      doc.text(`Veto Used: ${vetoUsed||"None"}`,10,50);
-      doc.text("Eviction:",10,60);
-      let y=70;
-      for(const [p,v] of Object.entries(votes)){ doc.text(`- ${p} → ${v}`,15,y); y+=10; }
-      doc.save("week_recap.pdf");
-    });
-
-    // --- Tabs ---
-    document.querySelectorAll("nav button").forEach(btn=>{
-      btn.addEventListener("click",()=>{
-        document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
-        document.querySelectorAll("main section").forEach(s=>s.classList.remove("active"));
-        btn.classList.add("active");
-        document.getElementById(btn.dataset.tab).classList.add("active");
-      });
-    });
-
-    // --- Init ---
-    renderPlayers(); renderAlliances(); renderJury();
-  </script>
-</body>
-</html>
+// --- Event Listeners ---
+document.getElementById("addPlayerBtn").addEventListener("click",()=>{ const n=document.getElementById("playerName").value.trim(); if(n&&!players.includes(n)) players.push(n); document.getElementById("playerName").value=""; saveState(); renderPlayers(); renderAlliances(); });
+document.getElementById("playerName").addEventListener("keypress",e=>{ if(e.key
