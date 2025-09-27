@@ -1,283 +1,1044 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Big Brother: Hotel Mystère Tracker</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Big Brother Tracker — Local</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 <style>
-  /* Luxury Hotel Mystère Theme */
-  body {
-    font-family: 'Georgia', serif;
-    background: linear-gradient(to bottom right, #1b0b2d, #3d1a50);
-    color: #f8f8f8;
-    margin: 0;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
+  :root{
+    --bg:#0f1724;
+    --card:#0b1220;
+    --muted:#98a0b3;
+    --accent:#6ee7b7;
+    --accent-2:#7dd3fc;
+    --glass: rgba(255,255,255,0.03);
+    --danger:#ff6b6b;
+    --success:#66e07f;
+    font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    color-scheme: dark;
   }
-  header {
-    background: #2e1136;
-    color: #ffd700;
-    text-align: center;
-    padding: 1rem;
-    font-size: 2rem;
-    font-weight: bold;
-    letter-spacing: 2px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.7);
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;background:
+    linear-gradient(160deg,#071124 0%, #0d1b2a 40%, #081426 100%); color:#e6eef8;}
+  .app{
+    max-width:1200px;margin:28px auto;padding:24px;border-radius:12px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    box-shadow: 0 10px 30px rgba(5,10,20,0.6);
+    border: 1px solid rgba(255,255,255,0.03);
   }
-  nav {
-    display: flex;
-    justify-content: center;
-    background: #3d1a50;
-    gap: 1rem;
-    padding: 0.5rem;
-    flex-wrap: wrap;
+  header{display:flex;gap:16px;align-items:center;justify-content:space-between;margin-bottom:18px}
+  h1{font-weight:700;margin:0;font-size:20px;letter-spacing:-0.2px}
+  .small{color:var(--muted);font-size:13px}
+  .grid{display:grid;grid-template-columns: 360px 1fr 360px; gap:18px;}
+  .panel{background:linear-gradient(180deg,var(--glass),transparent); padding:14px;border-radius:10px;border:1px solid rgba(255,255,255,0.02);}
+  .panel h2{margin:0 0 10px 0;font-size:15px}
+  .controls{display:flex;gap:8px;flex-wrap:wrap}
+  input,select,button,textarea{font-family:inherit}
+  input[type="text"],select,textarea{
+    width:100%;padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit;
+    outline:none;
   }
-  nav button {
-    background: #5a2e7f;
-    color: #ffd700;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: all 0.3s ease;
+  button{background:var(--accent);border:none;padding:8px 10px;border-radius:8px;color:#042017;font-weight:600;cursor:pointer}
+  button.ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--accent-2)}
+  .list{max-height:420px;overflow:auto;padding-right:6px}
+  .houseguest{
+    display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;margin-bottom:8px;background:linear-gradient(90deg,rgba(255,255,255,0.01),transparent)
   }
-  nav button.active, nav button:hover {
-    background: #ffd700;
-    color: #2e1136;
+  .avatar{width:38px;height:38px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:grid;place-items:center;font-weight:700;color:#023;box-shadow:0 4px 12px rgba(0,0,0,0.5)}
+  .hg-name{font-weight:600}
+  .meta{font-size:12px;color:var(--muted)}
+  .pill{padding:4px 8px;border-radius:999px;background:rgba(255,255,255,0.03);font-size:12px}
+  .row{display:flex;gap:8px;align-items:center}
+  .muted{color:var(--muted)}
+  .section{margin-bottom:12px}
+  .alliances-list .alliance{padding:8px;margin-bottom:8px;border-radius:8px;background:rgba(255,255,255,0.02);display:flex;justify-content:space-between;align-items:center}
+  .alliance-members{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+  .member-pill{padding:4px 8px;border-radius:999px;background:rgba(255,255,255,0.03);font-size:12px}
+  .news{
+    min-height:120px;border-radius:8px;padding:10px;background:linear-gradient(180deg, rgba(120,180,255,0.02), transparent);
+    border:1px solid rgba(124,170,255,0.06);
   }
-  main {
-    flex: 1;
-    padding: 1rem;
-    display: flex;
-    justify-content: center;
+  .news .headline{font-size:16px;font-weight:700;color:var(--accent-2);margin-bottom:6px}
+  .news-item{padding:8px;border-radius:6px;margin-bottom:8px;background:rgba(255,255,255,0.02)}
+  .live-controls{display:flex;gap:8px}
+  .eviction-card{padding:12px;border-radius:10px;background:linear-gradient(90deg, rgba(255,255,255,0.01), transparent); border:1px solid rgba(255,255,255,0.02)}
+  .kbd{font-family:monospace;background:rgba(255,255,255,0.03);padding:4px 6px;border-radius:6px;font-size:12px}
+  .muted-button{background:transparent;border:1px solid rgba(255,255,255,0.03);color:var(--muted);padding:6px 8px;border-radius:8px}
+  .danger{background:linear-gradient(90deg,#ff7b7b,#ff5a5a);color:#2a0000}
+  .flex-col{display:flex;flex-direction:column}
+  .help{font-size:12px;color:var(--muted);margin-top:6px}
+  /* responsive */
+  @media (max-width:1000px){
+    .grid{grid-template-columns:1fr;gap:12px}
+    .panel{padding:12px}
   }
-  section {
-    display: none;
-    width: 90%;
-    max-width: 1000px;
-    background: #2e1136;
-    border-radius: 12px;
-    padding: 1.5rem;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.8);
-    animation: fadeIn 0.4s ease;
-  }
-  section.active { display: block; }
-  h2 {
-    color: #ffd700;
-    margin-top: 0;
-  }
-  input, select {
-    background: #4b2b6a;
-    border: 1px solid #7a49a3;
-    color: #ffd700;
-    padding: 0.5rem;
-    border-radius: 6px;
-    margin-bottom: 0.5rem;
-  }
-  button.action {
-    background: #ffd700;
-    color: #2e1136;
-    font-weight: bold;
-    border: none;
-    padding: 0.5rem 1rem;
-    margin-left: 0.3rem;
-    border-radius: 8px;
-    cursor: pointer;
-  }
-  ul { list-style: none; padding: 0; margin: 0; }
-  li {
-    padding: 0.3rem 0;
-    border-bottom: 1px solid #7a49a3;
-  }
-  .alliance-card {
-    background: #3d1a50;
-    border: 1px solid #7a49a3;
-    border-radius: 8px;
-    padding: 0.5rem;
-    margin-bottom: 0.5rem;
-  }
-  .alliance-member {
-    display: inline-block;
-    background: #7a49a3;
-    color: #ffd700;
-    padding: 2px 6px;
-    border-radius: 4px;
-    margin: 2px;
-    font-size: 0.9rem;
-  }
-  .vote-bar {
-    height: 30px;
-    background: #3d1a50;
-    margin: 0.5rem 0;
-    border-radius: 6px;
-    overflow: hidden;
-    display: flex;
-  }
-  .vote-fill {
-    height: 100%;
-    text-align: center;
-    font-weight: bold;
-    color: #2e1136;
-    line-height: 30px;
-    transition: width 0.5s ease;
-  }
-  .fill1 { background: #e06c75; }
-  .fill2 { background: #61afef; }
-  @keyframes fadeIn { from {opacity:0;} to{opacity:1;} }
 </style>
 </head>
 <body>
-<header>🏨 Big Brother: Hotel Mystère Tracker</header>
-<nav>
-  <button data-tab="house" class="active">Houseguests</button>
-  <button data-tab="alliances">Alliances</button>
-  <button data-tab="week">Week Events</button>
-  <button data-tab="eviction">Eviction</button>
-  <button data-tab="jury">Jury</button>
-  <button data-tab="twists">Twists</button>
-</nav>
-<main>
-  <!-- Houseguests -->
-  <section id="house" class="active">
-    <h2>Houseguests</h2>
-    <input id="playerName" placeholder="Add player..." />
-    <button class="action" id="addPlayerBtn">Add</button>
-    <ul id="players"></ul>
-  </section>
-
-  <!-- Alliances -->
-  <section id="alliances">
-    <h2>Alliances</h2>
-    <input id="allianceName" placeholder="Alliance name..." />
-    <button class="action" id="addAllianceBtn">Create</button>
-    <div id="alliancesList"></div>
-  </section>
-
-  <!-- Week Events -->
-  <section id="week">
-    <h2>Week Events</h2>
+<div class="app" id="app">
+  <header>
     <div>
-      <h3>HOH</h3>
-      <select id="hohSelect"></select>
-      <button class="action" id="setHOHBtn">Confirm</button>
-      <p id="hohDisplay">None</p>
-
-      <h3>Nominations</h3>
-      <select id="nom1"></select>
-      <select id="nom2"></select>
-      <button class="action" id="setNomsBtn">Confirm</button>
-      <p id="nomsDisplay">None</p>
-
-      <h3>Veto</h3>
-      <select id="vetoSelect"></select>
-      <button class="action" id="setVetoBtn">Confirm</button>
-      <p id="vetoDisplay">None</p>
-
-      <h3>Veto Used</h3>
-      <select id="vetoUsedSelect"></select>
-      <button class="action" id="setVetoUsedBtn">Confirm</button>
-      <p id="vetoUsedDisplay">None</p>
+      <h1>Big Brother Tracker</h1>
+      <div class="small">Local-only • saved in browser • Full-featured tracker</div>
     </div>
-    <button class="action" id="saveWeekBtn">Save Week as PDF</button>
-  </section>
+    <div class="row">
+      <button id="load-sample" class="ghost">Load Sample Data</button>
+      <button id="export" class="ghost">Export JSON</button>
+      <button id="import-btn" class="ghost">Import JSON</button>
+      <input type="file" id="import-file" style="display:none" accept=".json" />
+      <button id="clear-storage" class="muted-button">Reset</button>
+    </div>
+  </header>
 
-  <!-- Eviction -->
-  <section id="eviction">
-    <h2>Eviction Night</h2>
-    <div>
-      <button class="action" id="startEvictionBtn">Start Live Vote</button>
-      <ul id="voteList"></ul>
-      <div class="vote-bar">
-        <div id="fill1" class="vote-fill fill1" style="width:0%">0</div>
-        <div id="fill2" class="vote-fill fill2" style="width:0%">0</div>
+  <div class="grid">
+    <!-- left: houseguests + alliances -->
+    <div class="panel">
+      <h2>Houseguests</h2>
+      <div class="section">
+        <div style="display:flex;gap:8px">
+          <input id="new-hg-name" placeholder="New houseguest name" />
+          <button id="add-hg">Add</button>
+        </div>
+        <div class="help">Add houseguests. Click a name to edit; use controls to set HoH, Nominee, Remove.</div>
       </div>
-      <button class="action" id="completeEvictionBtn">Complete Eviction</button>
-      <p id="prediction"></p>
+
+      <div class="list" id="hg-list"></div>
+
+      <hr style="border:none;border-top:1px solid rgba(255,255,255,0.02);margin:12px 0">
+      <h2>Alliances</h2>
+      <div class="section">
+        <div style="display:flex;gap:8px">
+          <input id="new-alliance-name" placeholder="Alliance name (e.g., 'Spice Rack')" />
+          <button id="create-alliance">Create</button>
+        </div>
+        <div class="help">Houseguests may belong to unlimited alliances. Click an alliance to manage members.</div>
+      </div>
+      <div id="alliances" class="alliances-list"></div>
     </div>
-  </section>
 
-  <!-- Jury -->
-  <section id="jury">
-    <h2>Jury</h2>
-    <label><input type="checkbox" id="juryPhase" /> Jury Phase Has Begun</label>
-    <h3>Evicted</h3>
-    <ul id="evicted"></ul>
-    <h3>Jury</h3>
-    <ul id="juryList"></ul>
-  </section>
+    <!-- center: main game controls -->
+    <div class="panel">
+      <h2>Current Week / Ceremony</h2>
+      <div class="row" style="gap:12px;margin-bottom:10px">
+        <div style="flex:1">
+          <label class="small">Head of Household</label>
+          <select id="hoh-select"><option value="">— none —</option></select>
+        </div>
+        <div style="flex:1">
+          <label class="small">Veto Winner</label>
+          <select id="veto-select"><option value="">— none —</option></select>
+        </div>
+        <div style="flex:1">
+          <label class="small">Jury Phase?</label>
+          <div style="display:flex;gap:8px;margin-top:6px">
+            <button id="toggle-jury" class="muted-button">Toggle Jury</button>
+            <div id="jury-indicator" class="pill">Jury: inactive</div>
+          </div>
+        </div>
+      </div>
 
-  <!-- Twists -->
-  <section id="twists">
-    <h2>Twists</h2>
-    <p>Track extra nominees, extra vetoes, or competition-based eliminations here.</p>
-  </section>
-</main>
+      <div class="section">
+        <div style="display:flex;gap:8px">
+          <div style="flex:1">
+            <label class="small">Initial Nominee 1</label>
+            <select id="nom1"><option value="">— none —</option></select>
+          </div>
+          <div style="flex:1">
+            <label class="small">Initial Nominee 2</label>
+            <select id="nom2"><option value="">— none —</option></select>
+          </div>
+        </div>
+        <div class="help">Set initial nominees. If veto is used, set 'Veto used on' and choose replacement nominee below.</div>
+      </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+      <div class="section">
+        <div style="display:flex;gap:8px">
+          <div style="flex:1">
+            <label class="small">Veto Used On</label>
+            <select id="veto-used-on"><option value="">— none —</option></select>
+          </div>
+          <div style="flex:1">
+            <label class="small">Replacement Nominee</label>
+            <select id="replacement"><option value="">— none —</option></select>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:8px;align-items:flex-end;margin-bottom:12px">
+        <button id="record-week" style="flex:1">Record Week (save current nominations & veto)</button>
+        <button id="clear-week" class="muted-button">Clear Ceremony</button>
+        <button id="end-week-evict" class="danger">Run Eviction</button>
+      </div>
+
+      <div class="section">
+        <h3 style="margin:0 0 8px 0">Eviction Predictor</h3>
+        <div class="eviction-card">
+          <div class="row" style="justify-content:space-between">
+            <div>
+              <div class="small">Current final nominees (for prediction)</div>
+              <div id="current-nominees" style="font-weight:700;margin-top:6px">—</div>
+            </div>
+            <div>
+              <div class="small">Eligible Voters</div>
+              <div id="eligible-count" style="font-weight:700;margin-top:6px">0</div>
+            </div>
+          </div>
+
+          <div style="margin-top:12px;display:flex;gap:12px;align-items:center">
+            <div style="flex:1">
+              <div class="small">Prediction</div>
+              <div style="display:flex;gap:8px;margin-top:6px;align-items:center">
+                <div class="progress"><i id="pred-bar" class="green" style="width:50%"></i></div>
+                <div id="pred-label" style="font-weight:700">—</div>
+              </div>
+            </div>
+            <div>
+              <button id="run-predict" class="ghost">Recalculate</button>
+            </div>
+          </div>
+          <div id="predict-details" class="help" style="margin-top:10px"></div>
+        </div>
+      </div>
+
+      <hr style="border:none;border-top:1px solid rgba(255,255,255,0.02);margin:12px 0">
+      <h3 style="margin:0 0 8px 0">Voting Recorder</h3>
+      <div class="section">
+        <div class="help">Record how each voter voted this eviction (who they voted to evict). These votes become part of voting history and are used in future predictions.</div>
+        <div id="vote-recorder" style="margin-top:8px"></div>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <button id="save-votes">Save Votes</button>
+          <button id="clear-votes" class="muted-button">Clear Votes</button>
+          <button id="auto-fill" class="ghost">Auto-fill by alliance (quick)</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- right: history, jury, live news -->
+    <div class="panel">
+      <h2>Eviction History & Jury</h2>
+      <div style="margin-bottom:8px">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="small">Recorded Evictions</div>
+          <div class="small muted">Count: <span id="eviction-count">0</span></div>
+        </div>
+        <div id="history-list" style="max-height:220px;overflow:auto;margin-top:8px"></div>
+      </div>
+
+      <div style="margin-top:10px">
+        <h3 style="margin:0 0 8px 0">Jury Management</h3>
+        <div style="display:flex;gap:8px">
+          <button id="toggle-jury-members" class="ghost">Open Jury Panel</button>
+          <div id="jury-list-mini" class="small muted">Jury: none</div>
+        </div>
+      </div>
+
+      <hr style="border:none;border-top:1px solid rgba(255,255,255,0.02);margin:12px 0">
+
+      <h2>Live Eviction — News Coverage</h2>
+      <div class="news" id="news-area">
+        <div class="headline" contenteditable="true" id="live-headline">LIVE: Eviction Night</div>
+        <div id="news-items" style="margin-top:8px"></div>
+        <textarea id="news-input" placeholder="Write breaking update..." style="width:100%;margin-top:8px"></textarea>
+        <div class="live-controls" style="margin-top:8px">
+          <button id="add-news">Add Update</button>
+          <button id="clear-news" class="muted-button">Clear All</button>
+          <button id="generate-news" class="ghost">Auto-generate headline</button>
+        </div>
+      </div>
+
+      <footer>
+        <div class="small muted">Made for tracking show-style gameplay • Local Storage</div>
+        <div style="display:flex;gap:8px">
+          <button id="help" class="ghost">Help</button>
+        </div>
+      </footer>
+    </div>
+  </div>
+</div>
+
 <script>
-let players = JSON.parse(localStorage.getItem("players"))||[];
-let alliances = JSON.parse(localStorage.getItem("alliances"))||{};
-let jury = JSON.parse(localStorage.getItem("jury"))||[];
-let evicted = JSON.parse(localStorage.getItem("evicted"))||[];
-let juryPhase = JSON.parse(localStorage.getItem("juryPhase"))||false;
-let hoh="", noms=[], veto="", vetoUsed="", evictionNominees=[], votes={};
+/*
+Merged working Big Brother Tracker:
+- Uses localStorage under key: bb_tracker_state_v1
+- Full features: houseguests, alliances (unlimited membership), HoH, nominees, veto, replacement,
+  vote recording, eviction history, jury toggle & management, final-two jury prediction,
+  live news area, import/export, reset, load sample.
+*/
+const STORAGE_KEY = 'bb_tracker_state_v1';
 
-// --- Helpers ---
+/* ---------- Utilities ---------- */
+const el = (sel) => document.querySelector(sel);
+const create = (tag, attrs={}, ...children) => {
+  const n = document.createElement(tag);
+  for (const k in attrs) {
+    if (k === 'class') n.className = attrs[k];
+    else if (k === 'html') n.innerHTML = attrs[k];
+    else n.setAttribute(k, attrs[k]);
+  }
+  for (const c of children) if (c) n.appendChild(typeof c === 'string' ? document.createTextNode(c) : c);
+  return n;
+}
+
+/* ---------- Default sample ---------- */
+function uid(){ return 'id-'+Math.random().toString(36).slice(2,9); }
+
+const SAMPLE = {
+  houseguests: [
+    {id:uid(), name:"Jules", status:"active"},
+    {id:uid(), name:"Marco", status:"active"},
+    {id:uid(), name:"Tanya", status:"active"},
+    {id:uid(), name:"Leo", status:"active"},
+    {id:uid(), name:"Asha", status:"active"},
+    {id:uid(), name:"Ben", status:"active"},
+    {id:uid(), name:"Mina", status:"active"},
+  ],
+  alliances: [
+    {id:uid(), name:"Spice Rack", members:[]},
+    {id:uid(), name:"Brothers", members:[]}
+  ],
+  hoh: null,
+  initialNominees: [null,null],
+  veto: {winner:null, usedOn:null, replacement:null},
+  votesHistory: [],
+  evictions: [],
+  juryOn: false,
+  jury: [],
+  news: {headline:"LIVE: Eviction Night", items:[]}
+};
+SAMPLE.alliances[0].members.push(SAMPLE.houseguests[0].id, SAMPLE.houseguests[2].id);
+SAMPLE.alliances[1].members.push(SAMPLE.houseguests[1].id, SAMPLE.houseguests[3].id);
+
+/* ---------- State ---------- */
+let state = loadState() || JSON.parse(JSON.stringify(SAMPLE));
+saveState();
+
+/* ---------- DOM nodes ---------- */
+const nodes = {
+  hgList: el('#hg-list'),
+  alliancesList: el('#alliances'),
+  hohSelect: el('#hoh-select'),
+  vetoSelect: el('#veto-select'),
+  nom1: el('#nom1'),
+  nom2: el('#nom2'),
+  vetoUsedOn: el('#veto-used-on'),
+  replacement: el('#replacement'),
+  recordWeek: el('#record-week'),
+  clearWeek: el('#clear-week'),
+  endWeekEvict: el('#end-week-evict'),
+  currentNominees: el('#current-nominees'),
+  eligibleCount: el('#eligible-count'),
+  predBar: el('#pred-bar'),
+  predLabel: el('#pred-label'),
+  predDetails: el('#predict-details'),
+  runPredict: el('#run-predict'),
+  voteRecorder: el('#vote-recorder'),
+  saveVotesBtn: el('#save-votes'),
+  clearVotesBtn: el('#clear-votes'),
+  autoFillBtn: el('#auto-fill'),
+  historyList: el('#history-list'),
+  evictionCount: el('#eviction-count'),
+  toggleJuryBtn: el('#toggle-jury'),
+  juryIndicator: el('#jury-indicator'),
+  juryMini: el('#jury-list-mini'),
+  toggleJuryPanel: el('#toggle-jury-members'),
+  newsItems: el('#news-items'),
+  newsInput: el('#news-input'),
+  addNewsBtn: el('#add-news'),
+  clearNewsBtn: el('#clear-news'),
+  headline: el('#live-headline'),
+  loadSample: el('#load-sample'),
+  exportBtn: el('#export'),
+  importBtn: el('#import-btn'),
+  importFile: el('#import-file'),
+  clearStorage: el('#clear-storage'),
+  helpBtn: el('#help'),
+  autoGenHeadline: el('#generate-news'),
+};
+
+/* ---------- Initial render ---------- */
+renderAll();
+
+/* ---------- Event listeners ---------- */
+el('#add-hg').addEventListener('click', ()=> {
+  const name = el('#new-hg-name').value.trim();
+  if (!name) return alert('Enter a name');
+  addHouseguest(name);
+  el('#new-hg-name').value='';
+});
+el('#create-alliance').addEventListener('click', ()=> {
+  const name = el('#new-alliance-name').value.trim();
+  if (!name) return alert('Enter alliance name');
+  createAlliance(name);
+  el('#new-alliance-name').value='';
+});
+
+nodes.recordWeek.addEventListener('click', ()=> {
+  persistCeremony();
+});
+nodes.clearWeek.addEventListener('click', ()=> {
+  clearCeremony();
+});
+nodes.endWeekEvict.addEventListener('click', ()=> {
+  runEvictionFlow();
+});
+nodes.runPredict.addEventListener('click', ()=> { runPredictor(); });
+nodes.saveVotesBtn.addEventListener('click', ()=> { saveRecordedVotes(); });
+nodes.clearVotesBtn.addEventListener('click', ()=> { renderVoteRecorder(); });
+nodes.autoFillBtn.addEventListener('click', ()=> { autoFillVotes(); });
+
+nodes.toggleJuryBtn.addEventListener('click', ()=> {
+  state.juryOn = !state.juryOn;
+  nodes.juryIndicator.textContent = state.juryOn ? 'Jury: active' : 'Jury: inactive';
+  saveState(); renderAll();
+});
+nodes.toggleJuryPanel.addEventListener('click', ()=> { openJuryPanel(); });
+
+nodes.addNewsBtn.addEventListener('click', ()=> {
+  const txt = nodes.newsInput.value.trim();
+  if (!txt) return;
+  state.news.items.unshift({id:uid(), time:Date.now(), text:txt});
+  nodes.newsInput.value='';
+  saveState(); renderNews();
+});
+nodes.clearNewsBtn.addEventListener('click', ()=> {
+  if (!confirm('Clear all live news?')) return;
+  state.news.items = [];
+  saveState(); renderNews();
+});
+nodes.autoGenHeadline.addEventListener('click', ()=> {
+  nodes.headline.textContent = autoHeadline();
+  state.news.headline = nodes.headline.textContent;
+  saveState();
+});
+
+nodes.loadSample.addEventListener('click', ()=> {
+  if (!confirm('Load sample data? This will overwrite current state.')) return;
+  state = JSON.parse(JSON.stringify(SAMPLE));
+  saveState();
+  renderAll();
+});
+nodes.exportBtn.addEventListener('click', ()=> {
+  const data = JSON.stringify(state, null, 2);
+  const blob = new Blob([data], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'bb-tracker-export.json'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+});
+nodes.importBtn.addEventListener('click', ()=> nodes.importFile.click());
+nodes.importFile.addEventListener('change', (e)=> {
+  const f = e.target.files[0];
+  if (!f) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const obj = JSON.parse(reader.result);
+      if (!confirm('Import JSON and overwrite current state?')) return;
+      state = obj;
+      saveState(); renderAll();
+      alert('Imported!');
+    } catch(err){ alert('Invalid JSON'); }
+  };
+  reader.readAsText(f);
+});
+nodes.clearStorage.addEventListener('click', ()=> {
+  if (confirm('Reset ALL data and clear storage?')) {
+    localStorage.removeItem(STORAGE_KEY);
+    state = JSON.parse(JSON.stringify(SAMPLE));
+    saveState(); renderAll();
+  }
+});
+nodes.helpBtn.addEventListener('click', ()=> {
+  alert(`Help — Quick tips:
+- Add houseguests on the left. Use the controls to set HoH or remove.
+- Use Current Week to set HoH, nominees, veto winner, veto use, replacement.
+- Click "Record Week" to save the week state (does not evict).
+- Click "Run Eviction" to run the eviction; you'll be asked to record votes (or auto-fill), and eviction will be saved and houseguest status updated.
+- Use Alliances to create groups; they influence predictions.
+- Toggle Jury when jury phase begins; evicted houseguests will be placed into Jury if it's on.
+- When two active remain, the app enters Final Two mode and predicts jury vote.
+`);
+});
+
+/* ---------- Core functions ---------- */
+
+function loadState(){
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    parsed.houseguests = parsed.houseguests || [];
+    parsed.alliances = parsed.alliances || [];
+    parsed.veto = parsed.veto || {winner:null,usedOn:null,replacement:null};
+    parsed.initialNominees = parsed.initialNominees || [null,null];
+    parsed.news = parsed.news || {headline:"LIVE: Eviction Night", items:[]};
+    return parsed;
+  } catch(e){ console.error(e); return null; }
+}
 function saveState(){
-  localStorage.setItem("players",JSON.stringify(players));
-  localStorage.setItem("alliances",JSON.stringify(alliances));
-  localStorage.setItem("jury",JSON.stringify(jury));
-  localStorage.setItem("evicted",JSON.stringify(evicted));
-  localStorage.setItem("juryPhase",JSON.stringify(juryPhase));
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
 }
-function renderPlayers(){
-  const ul=document.getElementById("players"); ul.innerHTML="";
-  players.forEach(p=>{ const li=document.createElement("li"); li.textContent=p; ul.appendChild(li); });
-  ["hohSelect","nom1","nom2","vetoSelect","vetoUsedSelect"].forEach(id=>{
-    const sel=document.getElementById(id);
-    if(!sel) return; sel.innerHTML="";
-    players.forEach(p=>{ const opt=document.createElement("option"); opt.value=p; opt.textContent=p; sel.appendChild(opt); });
-  });
+function saveStateAndRender(){
+  saveState(); renderAll();
 }
-function renderAlliances(){
-  const div=document.getElementById("alliancesList"); div.innerHTML="";
-  for(const [name,members] of Object.entries(alliances)){
-    const card=document.createElement("div"); card.className="alliance-card";
-    card.innerHTML=`<strong>${name}</strong>`;
-    members.forEach(m=>{
-      const span=document.createElement("span"); span.className="alliance-member"; span.textContent=m;
-      const rm=document.createElement("button"); rm.textContent="❌"; rm.style.marginLeft="3px";
-      rm.addEventListener("click",()=>{ alliances[name]=alliances[name].filter(x=>x!==m); saveState(); renderAlliances(); });
-      card.appendChild(span); card.appendChild(rm);
-    });
-    const sel=document.createElement("select");
-    players.forEach(p=>{ const o=document.createElement("option"); o.value=p;o.textContent=p; sel.appendChild(o); });
-    const addBtn=document.createElement("button"); addBtn.textContent="Add Member";
-    addBtn.className="action"; addBtn.addEventListener("click",()=>{ if(!alliances[name].includes(sel.value)) alliances[name].push(sel.value); saveState(); renderAlliances(); });
-    const delBtn=document.createElement("button"); delBtn.textContent="Demolish"; delBtn.className="action";
-    delBtn.addEventListener("click",()=>{ delete alliances[name]; saveState(); renderAlliances(); });
-    card.appendChild(sel); card.appendChild(addBtn); card.appendChild(delBtn);
-    div.appendChild(card);
+
+/* ---------- Houseguest management ---------- */
+function addHouseguest(name){
+  const hg = {id:uid(), name, status:'active', notes:''};
+  state.houseguests.push(hg);
+  saveStateAndRender();
+}
+function editHouseguest(id){
+  const hg = state.houseguests.find(h=>h.id===id);
+  if (!hg) return;
+  const newName = prompt('Edit name:', hg.name);
+  if (newName===null) return;
+  hg.name = newName.trim() || hg.name;
+  saveStateAndRender();
+}
+function removeHouseguest(id){
+  if (!confirm('Remove houseguest? This removes them from alliances and history but keeps past votes recorded.')) return;
+  state.houseguests = state.houseguests.filter(h=>h.id!==id);
+  state.alliances.forEach(a=> a.members = a.members.filter(m=>m!==id));
+  state.jury = state.jury.filter(x=>x!==id);
+  if (state.hoh === id) state.hoh = null;
+  state.initialNominees = state.initialNominees.map(n=> n===id?null:n);
+  if (state.veto) {
+    if (state.veto.winner===id) state.veto.winner=null;
+    if (state.veto.usedOn===id) state.veto.usedOn=null;
+    if (state.veto.replacement===id) state.veto.replacement=null;
+  }
+  saveStateAndRender();
+}
+function setStatus(id, status){
+  const hg = state.houseguests.find(h=>h.id===id);
+  if (!hg) return;
+  hg.status = status;
+  saveStateAndRender();
+}
+
+/* ---------- Alliances ---------- */
+function createAlliance(name){
+  state.alliances.push({id:uid(), name, members:[]});
+  saveStateAndRender();
+}
+function toggleMember(allianceId, memberId){
+  const a = state.alliances.find(x=>x.id===allianceId);
+  if (!a) return;
+  if (a.members.includes(memberId)) a.members = a.members.filter(x=>x!==memberId);
+  else a.members.push(memberId);
+  saveStateAndRender();
+}
+function removeAlliance(id){
+  if (!confirm('Delete alliance?')) return;
+  state.alliances = state.alliances.filter(a=>a.id!==id);
+  saveStateAndRender();
+}
+
+/* ---------- Ceremony persistence ---------- */
+function persistCeremony(){
+  state.hoh = el('#hoh-select').value || null;
+  state.veto.winner = el('#veto-select').value || null;
+  state.initialNominees = [el('#nom1').value || null, el('#nom2').value || null];
+  state.veto.usedOn = el('#veto-used-on').value || null;
+  state.veto.replacement = el('#replacement').value || null;
+  saveStateAndRender();
+  alert('Week recorded. Use "Run Eviction" to record votes and evict.');
+}
+function clearCeremony(){
+  state.hoh = null;
+  state.veto = {winner:null, usedOn:null, replacement:null};
+  state.initialNominees = [null,null];
+  saveStateAndRender();
+}
+
+/* ---------- Eviction flow ---------- */
+function runEvictionFlow(){
+  let nominees = computeFinalNominees();
+  if (nominees.length < 2) {
+    alert('Need two nominees to run eviction.');
+    return;
+  }
+  renderVoteRecorder();
+  alert('Fill votes for each eligible voter then click "Save Votes". You can also use "Auto-fill by alliance".');
+}
+
+function saveRecordedVotes(){
+  const voteInputs = document.querySelectorAll('[data-voter]');
+  const votes = {};
+  for (const v of voteInputs){
+    const voter = v.dataset.voter;
+    const val = v.value || '';
+    if (!val) {
+      alert('All voters must have a vote recorded. Use auto-fill or pick.');
+      return;
+    }
+    votes[voter] = val;
+  }
+  const tally = {};
+  Object.values(votes).forEach(v => tally[v] = (tally[v]||0)+1);
+  let sorted = Object.entries(tally).sort((a,b)=>b[1]-a[1]);
+  if (sorted.length >=2 && sorted[0][1] === sorted[1][1]) {
+    const opt = prompt('Tie detected. Enter evicted houseguest name EXACTLY as in list: ' + sorted.map(s=> getHGName(s[0])+' ('+s[1]+' votes)').join(','));
+    if (!opt) { alert('Eviction cancelled.'); return; }
+    const found = state.houseguests.find(h=>h.name === opt);
+    if (!found) { alert('Name not found. Eviction cancelled.'); return; }
+    finalizeEviction(found.id, votes);
+  } else {
+    const evictedId = sorted[0][0];
+    finalizeEviction(evictedId, votes);
   }
 }
-function renderJury(){
-  document.getElementById("juryPhase").checked=juryPhase;
-  const evUl=document.getElementById("evicted"); evUl.innerHTML="";
-  evicted.forEach(p=>{ const li=document.createElement("li"); li.textContent=p; evUl.appendChild(li); });
-  const jUl=document.getElementById("juryList"); jUl.innerHTML="";
-  jury.forEach(p=>{ const li=document.createElement("li"); li.textContent=p; jUl.appendChild(li); });
-}
-function updateVoteBar(){
-  const counts={}; Object.values(votes).forEach(v=>counts[v]=(counts[v]||0)+1);
-  const n1=evictionNominees[0], n2=evictionNominees[1]; const total=Object.keys(votes).length||1;
-  const c1=counts[n1]||0, c2=counts[n2]||0;
-  document.getElementById("fill1").style.width=(c1/total*100)+"%"; document.getElementById("fill2").style.width=(c2/total*100)+"%";
-  document.getElementById("fill1").textContent=c1; document.getElementById("fill2").textContent=c2;
-  let pred= c1>c2? n1 : c2>c1? n2 : "Tie";
-  document.getElementById("prediction").textContent="Predicted eviction: "+pred;
+
+function finalizeEviction(evictedId, votes){
+  const week = state.evictions.length + 1;
+  const nominees = computeFinalNominees();
+  const record = {
+    week, nominees: nominees.slice(), votes: {...votes}, evictionId: uid(), evictedId
+  };
+  state.votesHistory.push(record);
+  state.evictions.push({week, evictedId, nominees:nominees.slice(), votes: {...votes}});
+  const evictedHG = state.houseguests.find(h=>h.id===evictedId);
+  if (state.juryOn) {
+    state.jury.push(evictedId);
+    if (evictedHG) evictedHG.status = 'jury';
+  } else {
+    if (evictedHG) evictedHG.status = 'evicted';
+  }
+  state.hoh = null;
+  state.initialNominees = [null,null];
+  state.veto = {winner:null, usedOn:null, replacement:null};
+  saveStateAndRender();
+  alert('Eviction recorded: ' + (evictedHG ? evictedHG.name : evictedId));
+  checkFinalTwoMode();
 }
 
-// --- Event Listeners ---
-document.getElementById("addPlayerBtn").addEventListener("click",()=>{ const n=document.getElementById("playerName").value.trim(); if(n&&!players.includes(n)) players.push(n); document.getElementById("playerName").value=""; saveState(); renderPlayers(); renderAlliances(); });
-document.getElementById("playerName").addEventListener("keypress",e=>{ if(e.key
+function computeFinalNominees(){
+  let nom1 = state.initialNominees[0];
+  let nom2 = state.initialNominees[1];
+  if (state.veto && state.veto.usedOn) {
+    const used = state.veto.usedOn;
+    const replacement = state.veto.replacement;
+    if (used === nom1) nom1 = replacement;
+    if (used === nom2) nom2 = replacement;
+  }
+  const arr = [nom1, nom2].filter(Boolean);
+  if (arr[0] && arr[1] && arr[0] === arr[1]) arr.pop();
+  return arr;
+}
+
+/* ---------- Vote recorder UI ---------- */
+function getEligibleVoters(){
+  return state.houseguests.filter(h => h.status === 'active');
+}
+
+function renderVoteRecorder(){
+  const container = nodes.voteRecorder; container.innerHTML = '';
+  const nominees = computeFinalNominees();
+  if (nominees.length<2) { container.innerHTML = '<div class="muted">Need two final nominees for voting.</div>'; nodes.currentNominees.textContent = '—'; nodes.eligibleCount.textContent = 0; return; }
+  const voters = getEligibleVoters();
+  nodes.currentNominees.textContent = nominees.map(getHGName).join(' vs ');
+  nodes.eligibleCount.textContent = voters.length;
+  const table = document.createElement('div');
+  for (const v of voters) {
+    const row = create('div',{class:'row', style:'justify-content:space-between;gap:8px;margin-top:8px'});
+    const left = create('div',{style:'display:flex;gap:8px;align-items:center'});
+    left.appendChild(create('div',{class:'avatar'}, v.name.slice(0,2).toUpperCase()));
+    left.appendChild(create('div',{}, create('div',{class:'hg-name'}, v.name), create('div',{class:'meta'}, 'voter')));
+    const select = create('select', {'data-voter':v.id});
+    select.appendChild(create('option',{value:''}, '— vote —'));
+    for (const n of nominees) {
+      select.appendChild(create('option',{value:n}, getHGName(n)));
+    }
+    row.appendChild(left);
+    row.appendChild(select);
+    table.appendChild(row);
+  }
+  container.appendChild(table);
+}
+
+/* Auto fill quick by alliance */
+function autoFillVotes(){
+  const voters = getEligibleVoters();
+  const nominees = computeFinalNominees();
+  if (nominees.length < 2) return alert('Need two final nominees.');
+  for (const v of voters) {
+    const sel = document.querySelector(`[data-voter="${v.id}"]`);
+    if (!sel) continue;
+    const scores = nominees.map(n => allianceOverlapCount(v.id, n));
+    if (scores[0] < scores[1]) sel.value = nominees[0];
+    else if (scores[1] < scores[0]) sel.value = nominees[1];
+    else {
+      const pref = preferenceFromHistory(v.id, nominees);
+      sel.value = pref || nominees[Math.floor(Math.random()*nominees.length)];
+    }
+  }
+}
+
+/* ---------- Predictor ---------- */
+function runPredictor(){
+  const nominees = computeFinalNominees();
+  if (nominees.length < 2) {
+    nodes.predLabel.textContent = 'No nominees';
+    nodes.predBar.style.width = '50%';
+    nodes.predBar.className = 'green';
+    nodes.predDetails.textContent = '';
+    return;
+  }
+  const voters = state.houseguests.filter(h=>h.status==='active' && !nominees.includes(h.id));
+  const scores = {};
+  nominees.forEach(n => scores[n] = 0);
+  const perVoter = [];
+  for (const v of voters) {
+    const probs = voterProbabilities(v.id, nominees);
+    perVoter.push({voter:v.id, probs});
+    nominees.forEach(n => { scores[n] += probs[n]; });
+  }
+  const total = Object.values(scores).reduce((a,b)=>a+b,0);
+  const expectedVotes = {};
+  const N = voters.length;
+  nominees.forEach(n => expectedVotes[n] = Math.round(scores[n]*100)/100);
+  const sorted = Object.entries(expectedVotes).sort((a,b)=>b[1]-a[1]);
+  const evicted = sorted[0][0];
+  const evictedPct = N ? Math.round((scores[evicted]/N)*100) : 0;
+  nodes.predLabel.textContent = `${getHGName(evicted)} likely evicted — ~${evictedPct}% of votes`;
+  const w = Math.max(4, Math.round((scores[evicted]/(N||1)) * 100));
+  nodes.predBar.style.width = `${w}%`;
+  nodes.predBar.className = w>50? 'red':'green';
+  let details = `Voters considered: ${N}. Expected votes (sum of probabilities):\n`;
+  nominees.forEach(n=> details += `• ${getHGName(n)}: ${expectedVotes[n]} votes\n`);
+  details += '\nPer-voter probabilities (sample):\n';
+  perVoter.slice(0,6).forEach(pv=>{
+    details += `• ${getHGName(pv.voter)}: ${nominees.map(n=>`${getHGName(n)} ${(pv.probs[n]*100).toFixed(0)}%`).join(' | ')}\n`;
+  });
+  nodes.predDetails.textContent = details;
+}
+
+function voterProbabilities(voterId, nominees){
+  const out = {}; nominees.forEach(n=> out[n]=0);
+  const histCounts = {}; nominees.forEach(n=> histCounts[n]=0);
+  let totalVotes = 0;
+  for (const rec of state.votesHistory) {
+    const vote = rec.votes[voterId];
+    if (!vote) continue;
+    if (nominees.includes(vote)) { histCounts[vote]++; totalVotes++; }
+  }
+  if (totalVotes > 0) {
+    nominees.forEach(n => out[n] = histCounts[n] / totalVotes);
+  } else {
+    nominees.forEach(n => out[n] = 1/nominees.length);
+  }
+  nominees.forEach(n => {
+    const overlap = allianceOverlapCount(voterId, n);
+    const penalty = Math.min(0.35, 0.08 * overlap);
+    out[n] = Math.max(0.01, out[n] - penalty);
+  });
+  let sum = Object.values(out).reduce((a,b)=>a+b,0);
+  if (sum <= 0) {
+    nominees.forEach(n => out[n] = 1/nominees.length);
+  } else {
+    nominees.forEach(n => out[n] = out[n]/sum);
+  }
+  return out;
+}
+
+function allianceOverlapCount(aId, bId){
+  let n=0;
+  for (const al of state.alliances) {
+    if (al.members.includes(aId) && al.members.includes(bId)) n++;
+  }
+  return n;
+}
+function preferenceFromHistory(voterId, nominees){
+  const counts = {}; nominees.forEach(n=> counts[n]=0);
+  for (const rec of state.votesHistory) {
+    const v = rec.votes[voterId];
+    if (v && counts[v] !== undefined) counts[v]++;
+  }
+  let best = null; let max=0;
+  for (const k in counts) if (counts[k] > max) { max = counts[k]; best = k; }
+  return best;
+}
+
+/* ---------- Final Two Mode & Jury prediction ---------- */
+function checkFinalTwoMode(){
+  const active = state.houseguests.filter(h=> h.status==='active');
+  if (active.length === 2) {
+    const finalists = active.map(h=>h.id);
+    if (state.jury.length === 0) {
+      alert('Final Two reached but jury is empty. You can add jury members manually. Final two mode activates regardless.');
+    }
+    runFinalTwoPrediction(finalists);
+  }
+}
+
+function runFinalTwoPrediction(finalists){
+  const voters = state.jury.slice();
+  if (voters.length === 0) {
+    nodes.predLabel.textContent = 'No jury members to predict voting.';
+    nodes.predBar.style.width='50%'; nodes.predBar.className='green';
+    nodes.predDetails.textContent = '';
+    return;
+  }
+  const scores = {}; finalists.forEach(f=> scores[f]=0);
+  for (const v of voters) {
+    const probs = voterProbabilities(v, finalists);
+    finalists.forEach(f => scores[f] += probs[f]);
+  }
+  const total = Object.values(scores).reduce((a,b)=>a+b,0);
+  const p = {};
+  finalists.forEach(f => p[f] = Math.round((scores[f]/total)*100));
+  const sorted = Object.entries(scores).sort((a,b)=>b[1]-a[1]);
+  const winner = sorted[0][0];
+  nodes.predLabel.textContent = `${getHGName(winner)} predicted winner (${p[winner]}% of jury)`;
+  nodes.predBar.style.width = `${p[winner]}%`;
+  nodes.predBar.className = p[winner] > 50 ? 'green' : 'red';
+  let details = `Jury voters: ${voters.length}. Expected jury vote split:\n`;
+  finalists.forEach(f=> details += `• ${getHGName(f)}: ${p[f]}%\n`);
+  nodes.predDetails.textContent = details;
+}
+
+/* ---------- History & Jury Panel ---------- */
+function openJuryPanel(){
+  const choice = prompt('Open Jury panel. Type "list" to see members, or add/remove by typing commands:\nExamples:\nadd NAME\nremove NAME\nlist');
+  if (!choice) return;
+  const parts = choice.trim().split(' ');
+  if (parts[0] === 'list') {
+    alert('Jury members:\n' + state.jury.map(id=>getHGName(id)).join(', '));
+    return;
+  } else if (parts[0] === 'add') {
+    const name = parts.slice(1).join(' ');
+    const hg = state.houseguests.find(h=>h.name === name);
+    if (!hg) return alert('Name not found.');
+    if (!state.jury.includes(hg.id)) state.jury.push(hg.id);
+    saveStateAndRender(); return;
+  } else if (parts[0] === 'remove') {
+    const name = parts.slice(1).join(' ');
+    const hg = state.houseguests.find(h=>h.name === name);
+    if (!hg) return alert('Name not found.');
+    state.jury = state.jury.filter(x=>x!==hg.id);
+    saveStateAndRender(); return;
+  } else {
+    alert('Unknown command.');
+  }
+}
+
+/* ---------- News helpers ---------- */
+function renderNews(){
+  nodes.newsItems.innerHTML = '';
+  nodes.headline.textContent = state.news.headline || 'LIVE: Eviction Night';
+  for (const item of state.news.items) {
+    const div = create('div',{class:'news-item'});
+    div.appendChild(create('div',{style:'font-weight:700'}, new Date(item.time).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})));
+    div.appendChild(create('div',{style:'margin-top:6px'}, item.text));
+    const del = create('button',{class:'muted-button', style:'margin-top:8px'}, 'Delete');
+    del.addEventListener('click', ()=> {
+      state.news.items = state.news.items.filter(x=>x.id!==item.id);
+      saveStateAndRender(); renderNews();
+    });
+    div.appendChild(del);
+    nodes.newsItems.appendChild(div);
+  }
+}
+function autoHeadline(){
+  const lastEv = state.evictions[state.evictions.length-1];
+  if (lastEv) {
+    return `Breaking: ${getHGName(lastEv.evictedId)} evicted (Week ${lastEv.week})`;
+  }
+  const nom = computeFinalNominees();
+  if (nom.length>=2) return `Tense: ${getHGName(nom[0])} vs ${getHGName(nom[1])} — voting underway`;
+  return 'LIVE: Eviction Night';
+}
+
+/* ---------- Renderers ---------- */
+function renderAll(){
+  renderHouseguests();
+  renderAlliances();
+  renderSelectors();
+  renderVoteRecorder();
+  renderHistory();
+  renderNews();
+  nodes.juryIndicator.textContent = state.juryOn ? 'Jury: active' : 'Jury: inactive';
+  nodes.juryMini.textContent = 'Jury: ' + (state.jury.length ? state.jury.map(getHGName).join(', ') : 'none');
+  nodes.evictionCount.textContent = state.evictions.length;
+  runPredictor();
+}
+
+function renderHouseguests(){
+  nodes.hgList.innerHTML = '';
+  const order = [...state.houseguests].sort((a,b)=> {
+    const s = {active:0, finalist:1, jury:2, evicted:3};
+    return (s[a.status]||9) - (s[b.status]||9);
+  });
+  for (const hg of order){
+    const div = create('div',{class:'houseguest'});
+    const ava = create('div',{class:'avatar'}, hg.name.slice(0,2).toUpperCase());
+    const info = create('div',{style:'flex:1'});
+    const nameEl = create('div',{class:'hg-name'}, hg.name);
+    const meta = create('div',{class:'meta'}, hg.status === 'active' ? 'active' : hg.status);
+    info.appendChild(nameEl); info.appendChild(meta);
+    const actions = create('div',{style:'display:flex;gap:6px;align-items:center'});
+    const hohBtn = create('button', {class:'pill'}, (state.hoh === hg.id) ? 'HoH' : 'Set HoH');
+    hohBtn.addEventListener('click', ()=> {
+      if (state.hoh === hg.id) state.hoh = null; else state.hoh = hg.id;
+      saveStateAndRender();
+    });
+    const editBtn = create('button',{class:'muted-button'}, 'Edit');
+    editBtn.addEventListener('click', ()=> editHouseguest(hg.id));
+    const removeBtn = create('button',{class:'muted-button'}, 'Remove');
+    removeBtn.addEventListener('click', ()=> removeHouseguest(hg.id));
+    const statusBtn = create('button',{class:'ghost'}, 'Status');
+    statusBtn.addEventListener('click', ()=> {
+      const s = prompt('Set status: active / evicted / jury / finalist', hg.status);
+      if (!s) return;
+      setStatus(hg.id, s);
+    });
+    actions.appendChild(hohBtn); actions.appendChild(editBtn); actions.appendChild(statusBtn); actions.appendChild(removeBtn);
+    div.appendChild(ava); div.appendChild(info); div.appendChild(actions);
+    nodes.hgList.appendChild(div);
+  }
+}
+
+function renderAlliances(){
+  nodes.alliancesList.innerHTML = '';
+  for (const a of state.alliances){
+    const box = create('div',{class:'alliance'});
+    const left = create('div',{});
+    left.appendChild(create('div',{style:'font-weight:700'}, a.name));
+    const mem = create('div',{class:'alliance-members'});
+    for (const m of a.members){
+      const hg = getHGName(m);
+      const p = create('div',{class:'member-pill'}, hg);
+      p.addEventListener('click', ()=> {
+        toggleMember(a.id, m);
+      });
+      mem.appendChild(p);
+    }
+    const addBtn = create('button',{class:'muted-button'}, '+Member');
+    addBtn.addEventListener('click', ()=> {
+      const name = prompt('Type exact houseguest name to add:');
+      if (!name) return;
+      const hg = state.houseguests.find(h=>h.name === name);
+      if (!hg) return alert('Name not found');
+      if (!a.members.includes(hg.id)) a.members.push(hg.id);
+      saveStateAndRender();
+    });
+    const remBtn = create('button',{class:'muted-button'}, 'Delete');
+    remBtn.addEventListener('click', ()=> removeAlliance(a.id));
+    const right = create('div',{style:'display:flex;gap:6px;align-items:center'});
+    right.appendChild(addBtn); right.appendChild(remBtn);
+    box.appendChild(left); box.appendChild(right);
+    box.appendChild(mem);
+    nodes.alliancesList.appendChild(box);
+  }
+}
+
+function renderSelectors(){
+  const all = state.houseguests;
+  const choices = [{id:'', name:'— none —'}, ...all.map(h=>({id:h.id, name:h.name}))];
+  const fill = (sel) => {
+    sel.innerHTML = '';
+    for (const c of choices) {
+      const opt = create('option',{value:c.id}, c.name);
+      sel.appendChild(opt);
+    }
+  };
+  fill(nodes.hohSelect);
+  fill(nodes.vetoSelect);
+  fill(nodes.nom1);
+  fill(nodes.nom2);
+  fill(nodes.vetoUsedOn);
+  fill(nodes.replacement);
+  nodes.hohSelect.value = state.hoh || '';
+  nodes.vetoSelect.value = state.veto && state.veto.winner ? state.veto.winner : '';
+  nodes.nom1.value = state.initialNominees[0] || '';
+  nodes.nom2.value = state.initialNominees[1] || '';
+  nodes.vetoUsedOn.value = state.veto && state.veto.usedOn ? state.veto.usedOn : '';
+  nodes.replacement.value = state.veto && state.veto.replacement ? state.veto.replacement : '';
+  nodes.hohSelect.onchange = ()=> { state.hoh = nodes.hohSelect.value || null; saveStateAndRender(); };
+  nodes.vetoSelect.onchange = ()=> { state.veto.winner = nodes.vetoSelect.value || null; saveStateAndRender(); };
+  nodes.nom1.onchange = ()=> { state.initialNominees[0] = nodes.nom1.value || null; saveStateAndRender(); };
+  nodes.nom2.onchange = ()=> { state.initialNominees[1] = nodes.nom2.value || null; saveStateAndRender(); };
+  nodes.vetoUsedOn.onchange = ()=> { state.veto.usedOn = nodes.vetoUsedOn.value || null; saveStateAndRender(); };
+  nodes.replacement.onchange = ()=> { state.veto.replacement = nodes.replacement.value || null; saveStateAndRender(); };
+}
+
+/* ---------- History ---------- */
+function renderHistory(){
+  nodes.historyList.innerHTML = '';
+  for (const ev of state.evictions.slice().reverse()){
+    const box = create('div',{style:'padding:8px;margin-bottom:8px;border-radius:8px;background:rgba(255,255,255,0.02)'});
+    const title = create('div',{style:'font-weight:700'}, `Week ${ev.week}: ${getHGName(ev.evictedId)}`);
+    const nom = create('div',{class:'meta'}, `Nominees: ${ev.nominees.map(getHGName).join(' vs ')}`);
+    const votes = create('div',{style:'margin-top:6px', class:'small'}, `Votes: ${formatVotes(ev.votes)}`);
+    const undo = create('button',{class:'muted-button'}, 'Undo');
+    undo.addEventListener('click', ()=> {
+      if (!confirm('Undo this eviction (restore evicted to active and remove record)?')) return;
+      state.evictions = state.evictions.filter(e=> e.evictionId !== ev.evictionId);
+      state.votesHistory = state.votesHistory.filter(e=> e.evictionId !== ev.evictionId);
+      const hg = state.houseguests.find(h=>h.id===ev.evictedId);
+      if (hg) hg.status = 'active';
+      state.jury = state.jury.filter(x=> x !== ev.evictedId);
+      saveStateAndRender();
+    });
+    box.appendChild(title); box.appendChild(nom); box.appendChild(votes); box.appendChild(undo);
+    nodes.historyList.appendChild(box);
+  }
+}
+
+/* ---------- Helpers ---------- */
+function getHGName(id){
+  const hg = state.houseguests.find(h=>h.id===id);
+  return hg ? hg.name : id;
+}
+function formatVotes(votesObj){
+  const map = {};
+  for (const [voter, target] of Object.entries(votesObj)){
+    map[target] = (map[target] || 0) + 1;
+  }
+  return Object.entries(map).map(([t,c]) => `${getHGName(t)}: ${c}`).join(', ');
+}
+
+/* ---------- Misc helpers for UI ---------- */
+
+/* ---------- Final helpers ---------- */
+function loadState(){
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    parsed.houseguests = parsed.houseguests || [];
+    parsed.alliances = parsed.alliances || [];
+    parsed.veto = parsed.veto || {winner:null,usedOn:null,replacement:null};
+    parsed.initialNominees = parsed.initialNominees || [null,null];
+    parsed.news = parsed.news || {headline:"LIVE: Eviction Night", items:[]};
+    return parsed;
+  } catch(e){ console.error(e); return null; }
+}
+function saveState(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+/* Shortcut to save+render */
+function saveStateAndRender(){
+  saveState();
+  renderAll();
+}
+
+/* For first-run ensure all arrays exist */
+function ensureState(){
+  state.houseguests = state.houseguests || [];
+  state.alliances = state.alliances || [];
+  state.veto = state.veto || {winner:null,usedOn:null,replacement:null};
+  state.initialNominees = state.initialNominees || [null,null];
+  state.news = state.news || {headline:"LIVE: Eviction Night", items:[]};
+}
+ensureState();
+
+/* run initial UI */
+renderAll();
+
+</script>
+</body>
+</html>
